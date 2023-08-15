@@ -4,11 +4,11 @@ import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
 import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_bottom_text_widget.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_elevated_button.dart';
+import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_logo_widget.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
 import 'package:chat_gpt/futures/presentation/views/home_view/home_view.dart';
 import 'package:chat_gpt/futures/presentation/views/purchase_view/widgets/purchase_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
 class PurchaseView extends StatefulWidget {
@@ -48,7 +48,7 @@ class _PurchaseViewState extends State<PurchaseView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SvgPicture.asset("assets/icons/logo.svg"),
+              const CustomLogoWidget(),
               const CustomTextWidget(
                 text: "Unlimited chat with gpt for only, Try It Now.",
                 fontSize: 22,

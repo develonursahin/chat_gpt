@@ -14,5 +14,7 @@ class ColorConstant {
   Color darkThemeBlack = const Color(0xFF2D292D);
   Color darkThemeAppBar = const Color(0xFF635F63);
   Color transparent = Colors.transparent;
+  Color blackTransparent = const Color.fromARGB(13, 0, 0, 0);
+
   Color fullTransparent = const Color.fromARGB(0, 0, 0, 0);
 }

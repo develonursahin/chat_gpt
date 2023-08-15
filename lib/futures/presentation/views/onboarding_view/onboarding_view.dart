@@ -136,7 +136,3 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 }
-
-void main() {
-  runApp(const MaterialApp(home: OnboardingView()));
-}
