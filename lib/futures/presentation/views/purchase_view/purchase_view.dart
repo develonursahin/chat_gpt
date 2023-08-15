@@ -1,12 +1,28 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
 import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_bottom_text_widget.dart';
+import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_elevated_button.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
 import 'package:chat_gpt/futures/presentation/views/home_view/home_view.dart';
+import 'package:chat_gpt/futures/presentation/views/purchase_view/widgets/purchase_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
-class PurchaseView extends StatelessWidget {
-  const PurchaseView({super.key});
+class PurchaseView extends StatefulWidget {
+  const PurchaseView({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _PurchaseViewState createState() => _PurchaseViewState();
+}
+
+class _PurchaseViewState extends State<PurchaseView> {
+  String? selectedPaymentOption;
+  bool isLoad = false;
+  bool isPaymentOptionSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,22 +43,131 @@ class PurchaseView extends StatelessWidget {
         ],
       ),
       body: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 52, left: 52),
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SvgPicture.asset("assets/icons/logo.svg"),
-          const CustomTextWidget(
-            text: "Unlimited chat with gpt for only, Try It Now.",
-            fontSize: 20,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SvgPicture.asset("assets/icons/logo.svg"),
+              const CustomTextWidget(
+                text: "Unlimited chat with gpt for only, Try It Now.",
+                fontSize: 22,
+                textAlign: TextAlign.center,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.lock,
+                    color: ColorConstant.instance.green,
+                    size: 19,
+                  ),
+                  const SizedBox(width: 10),
+                  const CustomTextWidget(
+                    text: "Unlock to continue",
+                    fontSize: 19,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              Column(
+                children: paymentOptions.map((paymentOption) {
+                  return PurchaseCard(
+                    isSelected: paymentOption['name'] == selectedPaymentOption,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value == true) {
+                          selectedPaymentOption = paymentOption['name'];
+                          isPaymentOptionSelected = true;
+                        } else {
+                          selectedPaymentOption = null;
+                          isPaymentOptionSelected = false;
+                        }
+                      });
+                    },
+                    paymentName: paymentOption['name'],
+                    paymentPrice: paymentOption['price'],
+                  );
+                }).toList(),
+              ),
+              CustomElevatedButton(
+                onPressed: () {
+                  if (isPaymentOptionSelected) {
+                    _showAlertDialog(context);
+                  } else {
+                    _showToast(context, 'Please select a payment option');
+                  }
+                },
+                buttonText: "Try It Now",
+              ),
+              const CustomBottomTextWidget(),
+            ],
           ),
-          Row(children: [
-            Icon(Icons.lock, color: ColorConstant.instance.green),
-            const CustomTextWidget(
-              text: "Unlock to continue",
-            )
-          ]),
-        ],
-      )),
+        ),
+      ),
     );
+  }
+
+  void _showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  Future<bool> delayed() async {
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      isLoad = true;
+    });
+    return isLoad;
+  }
+
+  Future<void> _showAlertDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return FutureBuilder<bool>(
+          future: delayed(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/loading.json',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/completed.json',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        );
+      },
+    );
+
+    await Future.delayed(const Duration(seconds: 4));
+
+    Navigator.of(context, rootNavigator: true).pop();
+    CustomNavigator.goToScreen(context, const HomeView());
   }
 }

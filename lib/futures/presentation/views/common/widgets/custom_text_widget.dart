@@ -8,18 +8,20 @@ class CustomTextWidget extends StatelessWidget {
     this.isPrimaryColor = false,
     this.fontSize,
     this.fontWeight,
+    this.textAlign,
   });
 
   final String text;
   final double? fontSize;
   final bool isPrimaryColor;
   final FontWeight? fontWeight;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       style: TextStyle(
         color: isPrimaryColor
             ? ColorConstant.instance.green

@@ -1,5 +1,6 @@
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
 import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_elevated_button.dart';
 import 'package:chat_gpt/futures/presentation/views/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _OnboardingViewState createState() => _OnboardingViewState();
 }
 
@@ -121,23 +123,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: nextPage,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(sizeOf, 60),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          backgroundColor: ColorConstant.instance.green,
-                        ),
-                        child: const Text(
-                          "Next",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
+                      CustomElevatedButton(
+                          onPressed: nextPage, buttonText: "Next")
                     ],
                   ),
                 ),
