@@ -1,5 +1,3 @@
-import 'package:chat_gpt/futures/core/constants/apis/api.dart';
-import 'package:chat_gpt/futures/data/services/chat_repository.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
@@ -31,20 +29,29 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  String robotResponse = '';
-
-  void _sendMessage(String message) async {
+  void _sendMessage(String message) {
     if (message.isNotEmpty) {
-      try {
-        final apiKey = apiSecretKey; // Replace with your actual API key
-        robotResponse = await generateText(message, apiKey);
-
-        setState(() {});
-
-        _messageController.clear();
-      } catch (e) {
-        print('API request failed: $e');
-      }
+      setState(() {
+        chatMessages.add({
+          'message': message,
+          'sender': 'user', // 'user' or 'robot'
+        });
+      });
+      // Simulate robot response
+      Future.delayed(const Duration(milliseconds: 300), () {
+        setState(() {
+          chatMessages.add({
+            'message': 'Robot response to: $message',
+            'sender': 'robot',
+          });
+          robotMessageCount++;
+        });
+      });
+      _messageController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Mesaj girilmedi'),
+      ));
     }
   }
 
@@ -81,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SettingsView(),
+                    builder: (context) =>  const SettingsView(),
                   ),
                 );
               },
