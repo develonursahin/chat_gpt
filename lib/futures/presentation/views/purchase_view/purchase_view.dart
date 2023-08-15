@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class PurchaseView extends StatefulWidget {
-  const PurchaseView({Key? key}) : super(key: key);
+  const PurchaseView({Key? key, required this.openedFromOnboarding})
+      : super(key: key);
+  final bool openedFromOnboarding;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -23,6 +25,7 @@ class _PurchaseViewState extends State<PurchaseView> {
   String? selectedPaymentOption;
   bool isLoad = false;
   bool isPaymentOptionSelected = false;
+  bool isPremium = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,13 @@ class _PurchaseViewState extends State<PurchaseView> {
           Padding(
             padding: const EdgeInsets.only(right: 34),
             child: IconButton(
-              onPressed: () =>
-                  CustomNavigator.goToScreen(context, const HomeView()),
+              onPressed: () {
+                if (widget.openedFromOnboarding) {
+                  CustomNavigator.goToScreen(context, const HomeView());
+                } else {
+                  Navigator.pop(context);
+                }
+              },
               icon: const Icon(Icons.close_rounded),
               color: ColorConstant.instance.darkGrey,
             ),
@@ -94,6 +102,7 @@ class _PurchaseViewState extends State<PurchaseView> {
                 onPressed: () {
                   if (isPaymentOptionSelected) {
                     _showAlertDialog(context);
+                    isPremium = true;
                   } else {
                     _showToast(context, 'Please select a payment option');
                   }

@@ -1,7 +1,8 @@
+import 'package:chat_gpt/futures/core/constants/apis/api.dart';
+import 'package:chat_gpt/futures/data/services/chat_repository.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_logo_widget.dart';
 import 'package:chat_gpt/futures/presentation/views/settings_view/settings_view.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +17,9 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final TextEditingController _messageController = TextEditingController();
-  bool hasText = false; // Track if text is entered
-  List<Map<String, dynamic>> chatMessages = []; // List to hold chat messages
+  bool hasText = false;
+  List<Map<String, dynamic>> chatMessages = [];
+  int robotMessageCount = 0;
 
   @override
   void initState() {
@@ -29,28 +31,20 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  void _sendMessage(String message) {
+  String robotResponse = '';
+
+  void _sendMessage(String message) async {
     if (message.isNotEmpty) {
-      setState(() {
-        chatMessages.add({
-          'message': message,
-          'sender': 'user', // 'user' or 'robot'
-        });
-      });
-      // Simulate robot response
-      Future.delayed(const Duration(milliseconds: 300), () {
-        setState(() {
-          chatMessages.add({
-            'message': 'Robot response to: $message',
-            'sender': 'robot',
-          });
-        });
-      });
-      _messageController.clear();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Mesaj girilmedi'),
-      ));
+      try {
+        final apiKey = apiSecretKey; // Replace with your actual API key
+        robotResponse = await generateText(message, apiKey);
+
+        setState(() {});
+
+        _messageController.clear();
+      } catch (e) {
+        print('API request failed: $e');
+      }
     }
   }
 
@@ -84,7 +78,12 @@ class _HomeViewState extends State<HomeView> {
                 size: 24,
               ),
               onPressed: () {
-                CustomNavigator.goToScreen(context, const SettingsView());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsView(),
+                  ),
+                );
               },
             ),
           ],
@@ -109,13 +108,13 @@ class _HomeViewState extends State<HomeView> {
                   },
                 ),
               ),
+              CustomMessageBarWidget(
+                messageController: _messageController,
+                hasText: hasText,
+                onSendPressed: _sendMessage,
+              ),
             ],
           ),
-        ),
-        bottomNavigationBar: CustomMessageBarWidget(
-          messageController: _messageController,
-          hasText: hasText,
-          onSendPressed: _sendMessage,
         ),
       ),
     );
@@ -286,6 +285,8 @@ class CustomMessageBarWidget extends StatelessWidget {
                       ? ColorConstant.instance.white
                       : ColorConstant.instance.darkGreen,
                 ),
+                maxLines: null, // Allow multiple lines
+                textInputAction: TextInputAction.newline,
               ),
             ),
           ),

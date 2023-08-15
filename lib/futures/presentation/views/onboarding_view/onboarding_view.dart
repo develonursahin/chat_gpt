@@ -37,7 +37,10 @@ class _OnboardingViewState extends State<OnboardingView> {
         currentPageIndex++;
       });
     } else {
-      CustomNavigator.goToScreen(context, const PurchaseView());
+      CustomNavigator.goToScreen(
+        context,
+        const PurchaseView(openedFromOnboarding: true),
+      );
     }
   }
 

@@ -28,6 +28,7 @@ class CustomTextWidget extends StatelessWidget {
             : ColorConstant.instance.white,
         fontSize: fontSize,
         fontWeight: fontWeight,
+        fontFamily: 'Inter',
       ),
     );
   }
