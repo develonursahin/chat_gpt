@@ -46,7 +46,6 @@ class _HomeViewState extends State<HomeView> {
 
   void _sendMessage(String message) async {
     if (message.isNotEmpty && !isRequesting) {
-      // İstek gönderilmediyse devam et
       try {
         const apiKey = apiSecretKey;
         apiRequestCount++;
@@ -55,9 +54,14 @@ class _HomeViewState extends State<HomeView> {
         });
 
         await Future.delayed(const Duration(seconds: 3));
+
         robotResponse = await generateText(message, apiKey);
+        print(robotResponse);
+        print(robotResponse);
+
         if (kDebugMode) {
           print('API requests: $apiRequestCount');
+          print('Generated Text: $robotResponse');
         }
 
         setState(() {
@@ -79,6 +83,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    var watch = context.watch<HomeViewModel>();
+    var read = context.read<HomeViewModel>();
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.instance.black,
@@ -123,13 +129,13 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: chatMessages.length,
+                  itemCount: watch.messages.length,
                   itemBuilder: (context, index) {
-                    final message = chatMessages[index]['message'];
-                    final sender = chatMessages[index]['sender'];
+                    final message = watch.messages[index].message;
+                    final sender = watch.messages[index].sender;
 
                     return MessageBubbleWidget(
-                      message: message,
+                      message: message!,
                       alignment: sender == 'user'
                           ? CrossAxisAlignment.end
                           : CrossAxisAlignment.start,

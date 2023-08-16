@@ -4,13 +4,18 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class ChatProvider with ChangeNotifier {
   Box<ChatModel>? _chatBox; // Declare the box
-  List<ChatModel> _messages = [];
+  final List<ChatModel> _messages = [
+    ChatModel(message: "message", sender: "user"),
+    ChatModel(message: "message", sender: "robot"),
+  ];
 
   List<ChatModel> get messages => _messages;
 
   Future<void> initialize() async {
     _chatBox = await Hive.openBox<ChatModel>('chat_messages'); // Open the box
-    _messages = _chatBox!.values.toList();
+    _messages.addAll(_chatBox!.values.toList());
+    print(_messages);
+    print(_messages);
     notifyListeners();
   }
 
@@ -34,6 +39,8 @@ class HomeViewModel extends ChangeNotifier {
   List<ChatModel> get messages => chatProvider.messages;
 
   Future<void> initialize() async {
+    print(messages);
+    print(messages);
     await chatProvider.initialize();
     notifyListeners();
   }
