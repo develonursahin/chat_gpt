@@ -1,4 +1,5 @@
 import 'package:chat_gpt/futures/core/constants/apis/openai_api.dart';
+import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
 import 'package:chat_gpt/futures/data/services/chat_repository.dart';
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.dart';
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.dart';
@@ -21,20 +22,20 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final TextEditingController _messageController = TextEditingController();
-  late ChatProvider chatProvider;
-  late HomeViewModel homeViewModel;
-
-  bool hasText = false;
-  List<Map<String, dynamic>> chatMessages = [];
+  final ScrollController _scrollController =
+      ScrollController(keepScrollOffset: true);
+  late PremiumLocalDataSource _premiumLocalDataSource;
+  bool isPremium = false;
   int robotMessageCount = 0;
+  late HomeViewModel homeViewModel;
   String robotResponse = '';
+  bool hasText = false;
   int apiRequestCount = 0; // API istek sayacı
   bool isRequesting = false;
 
   @override
   void initState() {
     super.initState();
-    chatProvider = Provider.of<ChatProvider>(context, listen: false);
     homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
     _messageController.addListener(() {
       setState(() {
@@ -42,6 +43,27 @@ class _HomeViewState extends State<HomeView> {
       });
     });
     homeViewModel.initialize();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      } else if (_scrollController.position.pixels == 0) {
+        _scrollController.jumpTo(0); // Yukarı kaydırma işlemi
+      }
+    });
+    _premiumLocalDataSource = PremiumLocalDataSource();
+    _premiumLocalDataSource.get().then((premium) {
+      setState(() {
+        isPremium = premium!.isPremium!;
+      });
+    });
+  }
+
+  Future<void> _clearChat() async {
+    await homeViewModel.clearChat();
+    setState(() {
+      // Reset any necessary variables or state here
+    });
   }
 
   void _sendMessage(String message) async {
@@ -53,23 +75,32 @@ class _HomeViewState extends State<HomeView> {
           isRequesting = true;
         });
 
-        await Future.delayed(const Duration(seconds: 3));
-
         robotResponse = await generateText(message, apiKey);
-        print(robotResponse);
-        print(robotResponse);
 
         if (kDebugMode) {
           print('API requests: $apiRequestCount');
           print('Generated Text: $robotResponse');
         }
+        homeViewModel.addUserMessage(message);
 
+        homeViewModel.chatProvider.addMessage(robotResponse, 'robot');
+        _messageController.clear();
+        robotMessageCount++;
+
+        if (isPremium && robotMessageCount == 6) {
+          setState(() {
+            robotMessageCount = 0;
+          });
+        }
         setState(() {
           isRequesting = false;
         });
 
-        _messageController.clear();
-        chatProvider.addMessage(robotResponse, 'robot');
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
       } catch (e) {
         setState(() {
           isRequesting = false;
@@ -84,7 +115,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     var watch = context.watch<HomeViewModel>();
-    var read = context.read<HomeViewModel>();
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.instance.black,
@@ -103,7 +133,7 @@ class _HomeViewState extends State<HomeView> {
               color: ColorConstant.instance.white,
               size: 24,
             ),
-            onPressed: () {},
+            onPressed: _clearChat,
           ),
           actions: [
             IconButton(
@@ -129,12 +159,17 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Expanded(
                 child: ListView.builder(
+                  controller: _scrollController,
                   itemCount: watch.messages.length,
                   itemBuilder: (context, index) {
                     final message = watch.messages[index].message;
                     final sender = watch.messages[index].sender;
 
                     return MessageBubbleWidget(
+                      messages: watch.messages,
+                      isPremium: isPremium,
+                      robotMessageCount: robotMessageCount,
+                      sender: sender!,
                       message: message!,
                       alignment: sender == 'user'
                           ? CrossAxisAlignment.end
@@ -159,11 +194,19 @@ class _HomeViewState extends State<HomeView> {
 class MessageBubbleWidget extends StatefulWidget {
   final String message;
   final CrossAxisAlignment alignment;
+  final String sender;
+  final bool isPremium;
+  final int robotMessageCount;
+  final List messages;
 
   const MessageBubbleWidget({
     Key? key,
     required this.message,
     required this.alignment,
+    required this.sender,
+    required this.isPremium,
+    required this.robotMessageCount,
+    required this.messages,
   }) : super(key: key);
 
   @override
@@ -171,15 +214,25 @@ class MessageBubbleWidget extends StatefulWidget {
 }
 
 class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
+  bool disposed = false;
   bool showLoading = true;
+
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 1500), () {
-      setState(() {
-        showLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          showLoading = false;
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
   }
 
   @override
@@ -200,6 +253,53 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                 )),
           );
         },
+      );
+    }
+
+    int robotMessageCountCheck() {
+      int newRobotMessageCount = widget.robotMessageCount;
+
+      for (int i = 0; i < widget.messages.length; i++) {
+        if (widget.messages[i].sender == "robot") {
+          newRobotMessageCount++;
+        }
+      }
+      return newRobotMessageCount;
+    }
+
+    int robotMessageIndexCheck() {
+      int robotMessageIndex = 0;
+      List<int> robotMessages = [];
+
+      for (int i = 0; i < widget.messages.length; i++) {
+        if (widget.messages[i].sender == "robot") {
+          robotMessages[i] = i;
+          for (int j = 0; j < robotMessages.length; j++) {
+            if (j >= 6) {
+              robotMessageIndex = robotMessages[6];
+            }
+          }
+        }
+      }
+      return robotMessageIndex;
+    }
+
+    Widget robotMessageController() {
+      return Column(
+        children: [
+          const SizedBox(height: 10),
+          Text(
+            widget.message.substring(0, 10),
+            style: const TextStyle(color: Colors.white),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: const Text(
+              "Top to Unlock",
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
       );
     }
 
@@ -245,28 +345,39 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Text(
-                            widget.message,
-                            style:
-                                TextStyle(color: ColorConstant.instance.white),
-                          ),
-                        ),
-                        if (widget.alignment == CrossAxisAlignment.start)
-                          IconButton(
-                            onPressed: () {
-                              Clipboard.setData(
-                                  ClipboardData(text: widget.message));
-                              _showCopiedMessagePopup(
-                                  'Message copied:\n${widget.message}');
-                            },
-                            icon: const Icon(
-                              Icons.copy_rounded,
-                              size: 20,
+                        Row(
+                          children: [
+                            Expanded(
+                              child:
+                                  // widget.sender == 'robot' &&
+                                  //         !widget.isPremium &&
+                                  //         robotMessageCountCheck() >= 6 &&
+                                  //         robotMessageIndexCheck() >= 6
+                                  //     ? robotMessageController() :
+                                  Text(
+                                widget.message,
+                                style: TextStyle(
+                                  color: ColorConstant.instance.white,
+                                ),
+                              ),
                             ),
-                          ),
+                            if (widget.alignment == CrossAxisAlignment.start)
+                              IconButton(
+                                onPressed: () {
+                                  Clipboard.setData(
+                                      ClipboardData(text: widget.message));
+                                  _showCopiedMessagePopup(
+                                      'Message copied:\n${widget.message}');
+                                },
+                                icon: const Icon(
+                                  Icons.copy_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
