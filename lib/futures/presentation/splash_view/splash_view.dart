@@ -1,31 +1,33 @@
 import 'dart:async';
-
 import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/views/home_view/home_view.dart';
-import 'package:chat_gpt/futures/presentation/views/onboarding_view/onboarding_view.dart';
+import 'package:chat_gpt/futures/presentation/home_view/home_view.dart';
+import 'package:chat_gpt/futures/presentation/onboarding_view/onboarding_view.dart';
+import 'package:chat_gpt/futures/presentation/splash_view/splash_view_model.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {
-  const SplashView({Key? key}) : super(key: key);
+  const SplashView({super.key});
 
   @override
   State<SplashView> createState() => _SplashViewState();
 }
 
 class _SplashViewState extends State<SplashView> {
-  late bool firstLogin = true;
+  late SplashViewModel _viewModel;
+
   @override
   void initState() {
     super.initState();
-    navigate();
+    _viewModel = SplashViewModel();
+    _viewModel.init(navigate);
   }
 
   void navigate() {
     Timer(const Duration(seconds: 3), () {
-      if (firstLogin) {
-        CustomNavigator.goToScreen(context, const OnboardingView());
-      } else {
+      if (_viewModel.firstOpen) {
         CustomNavigator.goToScreen(context, const HomeView());
+      } else {
+        CustomNavigator.goToScreen(context, const OnboardingView());
       }
     });
   }

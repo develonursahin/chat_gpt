@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
 import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_elevated_button.dart';
-import 'package:chat_gpt/futures/presentation/views/purchase_view/purchase_view.dart';
+import 'package:chat_gpt/futures/presentation/common/widgets/custom_elevated_button.dart';
+import 'package:chat_gpt/futures/presentation/home_view/home_view.dart';
+import 'package:chat_gpt/futures/presentation/onboarding_view/onboarding_view_model.dart';
+import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -13,35 +17,37 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
+  late final OnboardingViewModel _onboardingViewModel;
   int currentPageIndex = 0;
   Color primaryColor = ColorConstant.instance.green;
 
-  final List<Map<String, String?>> onboardingData = [
-    {
-      'text1': 'Lorem',
-      'text2': 'Ipsum dolor sit',
-      'text3': 'Ask the bot anything, It’s always ready to help!',
-      'imagePath': 'assets/icons/onboard1.png',
-    },
-    {
-      'text1': 'Lorem',
-      'text2': 'Ipsum dolor sit',
-      'text3': 'Get the best answers from our application Enjoy!',
-      'imagePath': 'assets/icons/onboard2.png',
-    },
-  ];
-
-  void nextPage() {
-    if (currentPageIndex < onboardingData.length - 1) {
+  Future<void> nextPage() async {
+    if (currentPageIndex < _onboardingViewModel.onboardingData.length - 1) {
       setState(() {
         currentPageIndex++;
       });
     } else {
-      CustomNavigator.goToScreen(
-        context,
-        const PurchaseView(openedFromOnboarding: true),
-      );
+      await _onboardingViewModel.updateOnboard();
+      if (_onboardingViewModel.isPremium) {
+        CustomNavigator.goToScreen(
+          context,
+          const HomeView(),
+        );
+      } else {
+        CustomNavigator.goToScreen(
+          context,
+          const PurchaseView(openedFromOnboarding: true),
+        );
+      }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _onboardingViewModel = OnboardingViewModel();
+    _onboardingViewModel.createOnboard();
+    _onboardingViewModel.getPremium();
   }
 
   @override
@@ -60,7 +66,8 @@ class _OnboardingViewState extends State<OnboardingView> {
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 child: Image.asset(
-                  onboardingData[currentPageIndex]['imagePath']!,
+                  _onboardingViewModel.onboardingData[currentPageIndex]
+                      ['imagePath']!,
                   key: ValueKey<int>(currentPageIndex),
                   fit: BoxFit.cover,
                   height: sizeOf * 0.80,
@@ -82,7 +89,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                       RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: onboardingData[currentPageIndex]['text1'],
+                          text: _onboardingViewModel
+                              .onboardingData[currentPageIndex]['text1'],
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 25,
@@ -91,7 +99,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                           children: <TextSpan>[
                             TextSpan(
                               text:
-                                  " ${onboardingData[currentPageIndex]['text2']}",
+                                  " ${_onboardingViewModel.onboardingData[currentPageIndex]['text2']}",
                               style: TextStyle(
                                 color: primaryColor,
                                 fontSize: 25,
@@ -102,7 +110,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                         ),
                       ),
                       Text(
-                        onboardingData[currentPageIndex]['text3']!,
+                        _onboardingViewModel.onboardingData[currentPageIndex]
+                            ['text3']!,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -113,7 +122,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
-                          onboardingData.length,
+                          _onboardingViewModel.onboardingData.length,
                           (index) => Container(
                             width: 15,
                             height: 3,
@@ -127,7 +136,10 @@ class _OnboardingViewState extends State<OnboardingView> {
                         ),
                       ),
                       CustomElevatedButton(
-                          onPressed: nextPage, buttonText: "Next")
+                          onPressed: () async {
+                            await nextPage();
+                          },
+                          buttonText: "Next")
                     ],
                   ),
                 ),

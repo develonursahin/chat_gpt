@@ -1,4 +1,4 @@
-import 'package:chat_gpt/futures/presentation/views/common/common_views.dart';
+import 'package:chat_gpt/futures/presentation/common/common_views.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomTextWidget extends StatelessWidget {
@@ -57,7 +57,10 @@ class CustomBottomTextWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PrivacyPolicyPage(),
+        builder: (context) => const DynamicPage(
+          title: 'Privacy Policy',
+          content: 'Privacy Policy Page Content',
+        ),
       ),
     );
   }
@@ -66,7 +69,10 @@ class CustomBottomTextWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const RestorePurchasePage(),
+        builder: (context) => const DynamicPage(
+          title: 'Restore Purchase',
+          content: 'Restore Purchase Page Content',
+        ),
       ),
     );
   }
@@ -75,7 +81,10 @@ class CustomBottomTextWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const TermsOfUsePage(),
+        builder: (context) => const DynamicPage(
+          title: 'Terms of Use',
+          content: 'Terms Of Use Page Content',
+        ),
       ),
     );
   }

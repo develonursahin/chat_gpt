@@ -1,9 +1,15 @@
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/futures/core/constants/apis/openai_api.dart';
+import 'package:chat_gpt/futures/data/services/chat_repository.dart';
+import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.dart';
+import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
+import 'package:chat_gpt/futures/presentation/settings_view/settings_view.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_logo_widget.dart';
-import 'package:chat_gpt/futures/presentation/views/settings_view/settings_view.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -15,43 +21,59 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final TextEditingController _messageController = TextEditingController();
+  late ChatProvider chatProvider;
+  late HomeViewModel homeViewModel;
+
   bool hasText = false;
   List<Map<String, dynamic>> chatMessages = [];
   int robotMessageCount = 0;
+  String robotResponse = '';
+  int apiRequestCount = 0; // API istek sayacı
+  bool isRequesting = false;
 
   @override
   void initState() {
     super.initState();
+    chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
     _messageController.addListener(() {
       setState(() {
         hasText = _messageController.text.isNotEmpty;
       });
     });
+    homeViewModel.initialize();
   }
 
-  void _sendMessage(String message) {
-    if (message.isNotEmpty) {
-      setState(() {
-        chatMessages.add({
-          'message': message,
-          'sender': 'user', // 'user' or 'robot'
-        });
-      });
-      // Simulate robot response
-      Future.delayed(const Duration(milliseconds: 300), () {
+  void _sendMessage(String message) async {
+    if (message.isNotEmpty && !isRequesting) {
+      // İstek gönderilmediyse devam et
+      try {
+        const apiKey = apiSecretKey;
+        apiRequestCount++;
         setState(() {
-          chatMessages.add({
-            'message': 'Robot response to: $message',
-            'sender': 'robot',
-          });
-          robotMessageCount++;
+          isRequesting = true;
         });
-      });
-      _messageController.clear();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Mesaj girilmedi'),
-      ));
+
+        await Future.delayed(const Duration(seconds: 3));
+        robotResponse = await generateText(message, apiKey);
+        if (kDebugMode) {
+          print('API requests: $apiRequestCount');
+        }
+
+        setState(() {
+          isRequesting = false;
+        });
+
+        _messageController.clear();
+        chatProvider.addMessage(robotResponse, 'robot');
+      } catch (e) {
+        setState(() {
+          isRequesting = false;
+        });
+        if (kDebugMode) {
+          print('API request failed: $e');
+        }
+      }
     }
   }
 
@@ -87,8 +109,8 @@ class _HomeViewState extends State<HomeView> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>  const SettingsView(),
+                  CupertinoPageRoute(
+                    builder: (context) => const SettingsView(),
                   ),
                 );
               },

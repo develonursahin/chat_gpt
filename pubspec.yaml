@@ -12,13 +12,17 @@ dependencies:
   flutter_svg: ^2.0.7
   provider: ^6.0.5
   lottie: ^2.6.0
-  hive: ^2.2.3
   http: ^1.1.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hive_generator: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+
 flutter:
   uses-material-design: true
   assets:
