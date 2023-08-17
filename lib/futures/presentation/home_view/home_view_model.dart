@@ -3,13 +3,13 @@ import 'package:chat_gpt/futures/data/models/chat_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ChatProvider with ChangeNotifier {
-  Box<ChatModel>? _chatBox; // Declare the box
+  Box<ChatModel>? _chatBox;
   final List<ChatModel> _messages = [];
 
-  List<ChatModel> get messages => _messages;
+  List<ChatModel> get messages => _messages.reversed.toList();
 
   Future<void> initialize() async {
-    _chatBox = await Hive.openBox<ChatModel>('chat_messages'); // Open the box
+    _chatBox = await Hive.openBox<ChatModel>('chat_messages');
     _messages.addAll(_chatBox!.values.toList());
     notifyListeners();
   }
@@ -26,7 +26,7 @@ class ChatProvider with ChangeNotifier {
 
   void clearChat() {
     _messages.clear();
-    _chatBox?.clear(); // Clear the Hive box
+    _chatBox?.clear();
     notifyListeners();
   }
 }
@@ -46,7 +46,6 @@ class HomeViewModel with ChangeNotifier {
     messages.clear();
   }
 
-  // Bu fonksiyonu ekleyin:
   Future<void> addUserMessage(String message) async {
     await chatProvider.addMessage(message, 'user');
     notifyListeners();

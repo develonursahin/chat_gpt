@@ -35,10 +35,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Chat GPT',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.blueGrey[50],
-        primaryColor: Colors.amber,
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: ColorConstant.instance.green),
+        scaffoldBackgroundColor: ColorConstant.instance.black,
+        primaryColor: ColorConstant.instance.green,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: ColorConstant.instance.green,
+            background: ColorConstant.instance.white),
         useMaterial3: true,
       ),
       home: const SplashView(),
