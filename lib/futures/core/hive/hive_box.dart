@@ -1,10 +1,10 @@
 import 'package:chat_gpt/futures/data/models/chat_model.dart';
 import 'package:chat_gpt/futures/data/models/get_premium_model.dart';
-import 'package:chat_gpt/futures/data/models/message_counter_model.dart';
+import 'package:chat_gpt/futures/data/models/message_limit_model.dart';
 import 'package:chat_gpt/futures/data/models/onboarding_model.dart';
 import 'package:hive/hive.dart';
 
-late Box<MessageCounterModel> messageCounterBox;
+late Box<MessageLimitModel> messageLimitBox;
 late Box<GetPremiumModel> getPremiumBox;
 late Box<OnboardingModel> onboardingBox;
 late Box<ChatModel> chatBox;
@@ -13,12 +13,12 @@ void hiveRegisterAdapter() {
   Hive.registerAdapter(ChatModelAdapter());
   Hive.registerAdapter<OnboardingModel>(OnboardingModelAdapter());
   Hive.registerAdapter<GetPremiumModel>(GetPremiumModelAdapter());
-  Hive.registerAdapter<MessageCounterModel>(MessageCounterModelAdapter());
+  Hive.registerAdapter<MessageLimitModel>(MessageLimitModelAdapter());
 }
 
 Future<void> hiveBox() async {
-  messageCounterBox =
-      await Hive.openBox<MessageCounterModel>('message_counter_model');
   getPremiumBox = await Hive.openBox<GetPremiumModel>('premium_model');
   onboardingBox = await Hive.openBox<OnboardingModel>('onboarding_model');
+  messageLimitBox =
+      await Hive.openBox<MessageLimitModel>('message_limit_model');
 }

@@ -1,5 +1,5 @@
 import 'package:chat_gpt/futures/core/constants/apis/openai_api.dart';
-import 'package:chat_gpt/futures/data/datasource/message_counter_local_datasource.dart';
+import 'package:chat_gpt/futures/data/datasource/message_limit_local_datasource.dart';
 import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
 import 'package:chat_gpt/futures/data/services/chat_repository.dart';
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.dart';
@@ -27,14 +27,17 @@ class _HomeViewState extends State<HomeView> {
       ScrollController(keepScrollOffset: true);
   late PremiumLocalDataSource _premiumLocalDataSource;
   late HomeViewModel homeViewModel;
-  late MessageCounterLocalDataSource _messageCounterLocalDataSource;
+
+  late MessageLimitLocalDataSource _messageLimitLocalDataSource;
+
   String robotResponse = '';
   int robotMessageCount = 0;
   int apiRequestCount = 0;
   bool isPremium = false;
   bool hasText = false;
-  bool limitedMessage = false;
+  bool messageView = false;
   bool isRequesting = false;
+  bool isLimitFull = false;
 
   @override
   void initState() {
@@ -78,17 +81,15 @@ class _HomeViewState extends State<HomeView> {
         setState(() {
           isRequesting = true;
         });
-
+        homeViewModel.addUserMessage(message);
+        _messageController.clear();
         robotResponse = await generateText(message, apiKey);
-
         if (kDebugMode) {
           print('API requests: $apiRequestCount');
           print('Generated Text: $robotResponse');
         }
-        homeViewModel.addUserMessage(message);
 
         homeViewModel.chatProvider.addMessage(robotResponse, 'robot');
-        _messageController.clear();
         robotMessageCount++;
 
         setState(() {
@@ -96,7 +97,7 @@ class _HomeViewState extends State<HomeView> {
         });
 
         _scrollDown();
-        await homeViewModel.updateCounter();
+        await homeViewModel.getMessageLimit();
       } catch (e) {
         setState(() {
           isRequesting = false;
@@ -161,66 +162,15 @@ class _HomeViewState extends State<HomeView> {
                   itemBuilder: (context, index) {
                     final message = watch.messages[index].message;
                     final sender = watch.messages[index].sender;
-                    // if (watch.counter >= 6) {
-                    //   if (sender == "robot" &&
-                    //       !isPremium &&
-                    //       watch.index <= watch.messages.length / 2 - 6) {
-                    //     limitedMessage = true;
-                    //   } else {
-                    //     limitedMessage = false;
-                    //   }
-                    // } else {
-                    //   limitedMessage = false;
-                    // }
-                    // if (isPremium) {
-                    //   limitedMessage = false;
-                    // } else {
-                    //   if (watch.counter >= 6) {
-                    //     limitedMessage = true;
-                    //   } else {
-                    //     limitedMessage = false;
-                    //   }
-                    // }
 
-                    // if (index <= watch.index) {
-                    //   if (watch.index <= 12) {
-                    //     limitedMessage = false;
-                    //   } else {
-                    //     limitedMessage = true;
-                    //   }
-                    // } else {
-                    //   limitedMessage = true;
-                    // }
-                    // if (!isPremium && watch.index) {}
-
-                    // if (watch.index <= 12 || !isPremium && watch.counter >= 6) {
-                    //   limitedMessage = true;
-                    // } else {
-                    //   limitedMessage = false;
-                    // }
-                    // if (index == 0) {
-                    //   if (watch.counter >= 6) {
-                    //     limitedMessage = true;
-                    //   } else {
-                    //     limitedMessage = false;
-                    //   }
-                    // } else {
-                    //   limitedMessage = false;
-                    // }
-                    // if (sender == "robot" && !isPremium) {
-                    //   if (index >= watch.messages.length - 12) {
-                    //     limitedMessage = true;
-                    //   } else if (watch.counter >= 6) {
-                    //     limitedMessage = true;
-                    //   } else {
-                    //     limitedMessage = false;
-                    //   }
-                    // } else {
-                    //   limitedMessage = false;
-                    // }
+                    if (!isPremium && !watch.isLimitFull) {
+                      messageView = true;
+                    } else {
+                      messageView = false;
+                    }
 
                     return MessageBubbleWidget(
-                      limitedMessage: limitedMessage,
+                      limitedMessage: messageView,
                       sender: sender!,
                       message: message!,
                       alignment: sender == 'user'

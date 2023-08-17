@@ -1,6 +1,6 @@
 import 'package:chat_gpt/futures/core/hive/hive_box.dart';
-import 'package:chat_gpt/futures/data/datasource/message_counter_local_datasource.dart';
-import 'package:chat_gpt/futures/data/models/message_counter_model.dart';
+import 'package:chat_gpt/futures/data/datasource/message_limit_local_datasource.dart';
+import 'package:chat_gpt/futures/data/models/message_limit_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:chat_gpt/futures/data/models/chat_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,50 +36,35 @@ class ChatProvider with ChangeNotifier {
 
 class HomeViewModel with ChangeNotifier {
   final ChatProvider chatProvider = ChatProvider();
-  final MessageCounterLocalDataSource _messageCounterLocalDataSource =
-      MessageCounterLocalDataSource();
-  int counter = 0;
-  int index = 0;
+  final MessageLimitLocalDataSource _messageLimitLocalDataSource =
+      MessageLimitLocalDataSource();
+
+  bool isLimitFull = false;
 
   List<ChatModel> get messages => chatProvider.messages;
 
   Future<void> initialize() async {
     await chatProvider.initialize();
-    await getMessageCounter();
+    await getMessageLimit();
     notifyListeners();
   }
 
-  Future<void> getMessageCounter() async {
-    if (messageCounterBox.isNotEmpty) {
-      var model = await _messageCounterLocalDataSource.get();
-      counter = model!.counter!;
-      index = model.index!;
+  Future<void> getMessageLimit() async {
+    var messageLimitModel = await _messageLimitLocalDataSource.get();
+    if (messageLimitModel != null) {
+      isLimitFull = messageLimitModel.isLimitFull!;
+    }
+  }
+
+  Future<void> updateMessageLimit() async {
+    if (messageLimitBox.isNotEmpty) {
+      await _messageLimitLocalDataSource
+          .update(MessageLimitModel(isLimitFull: true));
     }
     notifyListeners();
   }
-
-  Future<void> updateCounter() async {
-    if (messageCounterBox.isNotEmpty) {
-      await _messageCounterLocalDataSource.update(MessageCounterModel(
-        counter: counter++,
-        index: index == 0 ? messages.length : index,
-      ));
-    }
-    notifyListeners();
-  }
-
-  // Future<void> updateCounterIndex() async {
-  //   if (messageCounterBox.isNotEmpty) {
-  //     await _messageCounterLocalDataSource.update(MessageCounterModel(
-  //       counter: counter,
-  //       index: index,
-  //     ));
-  //   }
-  //   notifyListeners();
-  // }
 
   Future<void> clearChat() async {
-    index = index + messages.length - 1;
     chatProvider.clearChat();
     messages.clear();
   }

@@ -1,35 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'message_counter_model.dart';
+part of 'message_limit_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MessageCounterModelAdapter extends TypeAdapter<MessageCounterModel> {
+class MessageLimitModelAdapter extends TypeAdapter<MessageLimitModel> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
-  MessageCounterModel read(BinaryReader reader) {
+  MessageLimitModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MessageCounterModel(
-      counter: fields[0] as int?,
-      index: fields[1] as int?,
+    return MessageLimitModel(
+      isLimitFull: fields[0] as bool?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MessageCounterModel obj) {
+  void write(BinaryWriter writer, MessageLimitModel obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.counter)
       ..writeByte(1)
-      ..write(obj.index);
+      ..writeByte(0)
+      ..write(obj.isLimitFull);
   }
 
   @override
@@ -38,7 +35,7 @@ class MessageCounterModelAdapter extends TypeAdapter<MessageCounterModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MessageCounterModelAdapter &&
+      other is MessageLimitModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -67,11 +67,10 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
     }
 
     Widget unlockMessage() {
-      return Text(
-        widget.message,
-        style: TextStyle(
-          color: ColorConstant.instance.white,
-        ),
+      return CustomTextWidget(
+        text: widget.message,
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
       );
     }
 
@@ -91,9 +90,18 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                     openedFromOnboarding: true,
                   ));
             },
-            child: const Text(
-              "Top to Unlock",
-              style: TextStyle(color: Colors.white),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: ColorConstant.instance.transparent,
+                  child: Image.asset('assets/icons/lock.png'),
+                ),
+                const CustomTextWidget(
+                  text: "Top to Unlock",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                ),
+              ],
             ),
           )
         ],
@@ -104,24 +112,20 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
       crossAxisAlignment: widget.alignment,
       children: [
         SizedBox(
-          width: 250,
+          width: MediaQuery.sizeOf(context).width * 3 / 5,
           child: Row(
             children: [
               if (widget.alignment == CrossAxisAlignment.start)
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40, right: 5),
-                      child: CircleAvatar(
-                        maxRadius: 10,
-                        minRadius: 10,
-                        backgroundColor: Colors.transparent,
-                        child: Image.asset(
-                          "assets/icons/robot.png",
-                        ),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 80),
+                  child: CircleAvatar(
+                    maxRadius: 10,
+                    minRadius: 10,
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset(
+                      "assets/icons/robot.png",
                     ),
-                  ],
+                  ),
                 ),
               Expanded(
                 child: Container(
@@ -159,9 +163,10 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                                   _showCopiedMessagePopup(
                                       'Message copied:\n${widget.message}');
                                 },
-                                icon: const Icon(
-                                  Icons.copy_rounded,
+                                icon: Icon(
+                                  Icons.content_copy_rounded,
                                   size: 20,
+                                  color: ColorConstant.instance.grey,
                                 ),
                               ),
                           ],

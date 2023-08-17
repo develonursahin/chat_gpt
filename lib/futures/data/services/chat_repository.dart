@@ -23,7 +23,7 @@ Future<String> generateText(String prompt, String apiKey) async {
   if (response.statusCode == 200) {
     return result['choices'][0]['text'];
   } else {
-    // return result['error'][0]['message'];
+    return result['error']['message'];
     throw Exception('API request failed: ${response.statusCode}');
   }
 }
