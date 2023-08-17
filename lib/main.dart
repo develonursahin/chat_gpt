@@ -1,7 +1,5 @@
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/data/models/chat_model.dart';
-import 'package:chat_gpt/futures/data/models/get_premium_model.dart';
-import 'package:chat_gpt/futures/data/models/onboarding_model.dart';
+import 'package:chat_gpt/futures/core/hive/hive_box.dart';
 import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
 import 'package:chat_gpt/futures/presentation/splash_view/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +9,8 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(ChatModelAdapter());
-  Hive.registerAdapter<OnboardingModel>(OnboardingModelAdapter());
-  Hive.registerAdapter<GetPremiumModel>(GetPremiumModelAdapter());
-
+  hiveRegisterAdapter();
+  await hiveBox();
   runApp(
     MultiProvider(
       providers: [

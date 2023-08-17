@@ -1,11 +1,11 @@
 import 'package:chat_gpt/futures/core/hive/hive_box.dart';
-import 'package:chat_gpt/futures/data/models/onboarding_model.dart';
+import 'package:chat_gpt/futures/data/models/message_counter_model.dart';
 import 'package:flutter/foundation.dart';
 
-class OnboardingLocalDataSource {
-  Future<void> create(OnboardingModel model) async {
+class MessageCounterLocalDataSource {
+  Future<void> create(MessageCounterModel model) async {
     try {
-      await onboardingBox.add(model);
+      await messageCounterBox.add(model);
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -13,9 +13,9 @@ class OnboardingLocalDataSource {
     }
   }
 
-  Future<OnboardingModel?> get() async {
+  Future<MessageCounterModel?> get() async {
     try {
-      return onboardingBox.getAt(0);
+      return messageCounterBox.getAt(0);
     } catch (e) {
       throw Exception(e);
     }
@@ -23,7 +23,7 @@ class OnboardingLocalDataSource {
 
   Future<void> delete() async {
     try {
-      onboardingBox.clear();
+      messageCounterBox.clear();
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -31,9 +31,9 @@ class OnboardingLocalDataSource {
     }
   }
 
-  Future<void> update(OnboardingModel model) async {
+  Future<void> update(MessageCounterModel model) async {
     try {
-      onboardingBox.putAt(0, model);
+      messageCounterBox.putAt(0, model);
     } catch (e) {
       if (kDebugMode) {
         print(e);

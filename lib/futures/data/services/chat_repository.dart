@@ -19,10 +19,11 @@ Future<String> generateText(String prompt, String apiKey) async {
   final response = await http.post(Uri.parse(apiUrl),
       headers: headers, body: jsonEncode(data));
   if (kDebugMode) {}
+  final Map<String, dynamic> result = jsonDecode(response.body);
   if (response.statusCode == 200) {
-    final Map<String, dynamic> result = jsonDecode(response.body);
     return result['choices'][0]['text'];
   } else {
+    // return result['error'][0]['message'];
     throw Exception('API request failed: ${response.statusCode}');
   }
 }
