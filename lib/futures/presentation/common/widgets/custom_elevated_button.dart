@@ -21,7 +21,7 @@ class CustomElevatedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
         ),
         backgroundColor:
-            ColorConstant.instance.green, // Change this color if needed
+            ColorConstant.instance.green,
       ),
       child: Text(
         buttonText,

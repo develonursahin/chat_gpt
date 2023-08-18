@@ -1,11 +1,12 @@
 import 'package:chat_gpt/futures/core/constants/apis/openai_api.dart';
+import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/futures/data/datasource/message_limit_local_datasource.dart';
-import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
 import 'package:chat_gpt/futures/data/services/chat_repository.dart';
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.dart';
 import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
 import 'package:chat_gpt/futures/presentation/home_view/widgets/custom_message_bar_widget.dart';
 import 'package:chat_gpt/futures/presentation/home_view/widgets/message_buble_widget.dart';
+import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
 import 'package:chat_gpt/futures/presentation/settings_view/settings_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -25,7 +26,6 @@ class _HomeViewState extends State<HomeView> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController =
       ScrollController(keepScrollOffset: true);
-  late PremiumLocalDataSource _premiumLocalDataSource;
   late HomeViewModel homeViewModel;
 
   late MessageLimitLocalDataSource _messageLimitLocalDataSource;
@@ -33,7 +33,6 @@ class _HomeViewState extends State<HomeView> {
   String robotResponse = '';
   int robotMessageCount = 0;
   int apiRequestCount = 0;
-  bool isPremium = false;
   bool hasText = false;
   bool messageView = false;
   bool isRequesting = false;
@@ -49,12 +48,6 @@ class _HomeViewState extends State<HomeView> {
       });
     });
     homeViewModel.initialize();
-    _premiumLocalDataSource = PremiumLocalDataSource();
-    _premiumLocalDataSource.get().then((premium) {
-      setState(() {
-        isPremium = premium!.isPremium!;
-      });
-    });
     _scrollDown();
   }
 
@@ -68,9 +61,17 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Future<void> _clearChat() async {
-    await homeViewModel.clearChat();
-    setState(() {});
+  Future<void> _clearChat(bool isPremium) async {
+    if (isPremium) {
+      await homeViewModel.clearChat();
+      setState(() {});
+    } else {
+      CustomNavigator.goToScreen(
+          context,
+          const PurchaseView(
+            openedFromOnboarding: true,
+          ));
+    }
   }
 
   Future<void> _sendMessage(String message) async {
@@ -78,6 +79,9 @@ class _HomeViewState extends State<HomeView> {
       try {
         const apiKey = apiSecretKey;
         apiRequestCount++;
+        homeViewModel.messageCount++;
+
+        homeViewModel.updateMessageLimit(isLimitFull);
         setState(() {
           isRequesting = true;
         });
@@ -130,7 +134,9 @@ class _HomeViewState extends State<HomeView> {
               color: ColorConstant.instance.white,
               size: 24,
             ),
-            onPressed: _clearChat,
+            onPressed: () {
+              _clearChat(watch.isPremium);
+            },
           ),
           actions: [
             IconButton(
@@ -162,15 +168,34 @@ class _HomeViewState extends State<HomeView> {
                   itemBuilder: (context, index) {
                     final message = watch.messages[index].message;
                     final sender = watch.messages[index].sender;
+                    print(watch.messageCount);
+                    if (watch.isPremium) {
+                      homeViewModel.updateMessageLimit(false);
 
-                    if (!isPremium && !watch.isLimitFull) {
-                      messageView = true;
-                    } else {
+                      watch.isLimitFull = false;
+                    }
+                    if (sender == "robot") {
+                      if (!watch.isPremium) {
+                        if (watch.messageCount >= 6 && index >= 6) {
+                          // messageView = true;
+                          homeViewModel.updateMessageLimit(true);
+                        } else {
+                          // messageView = false;
+                          homeViewModel.updateMessageLimit(false);
+                        }
+                      } else {
+                        messageView = false;
+                        homeViewModel.updateMessageLimit(false);
+                      }
                       messageView = false;
                     }
 
                     return MessageBubbleWidget(
-                      limitedMessage: messageView,
+                      messageView: sender == "robot" &&
+                              !watch.isPremium &&
+                              index == watch.messages.length - 12
+                          ? true
+                          : false,
                       sender: sender!,
                       message: message!,
                       alignment: sender == 'user'
@@ -181,6 +206,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               CustomMessageBarWidget(
+                isLimitFull: watch.isLimitFull,
                 messageController: _messageController,
                 hasText: hasText,
                 onSendPressed: _sendMessage,

@@ -18,15 +18,18 @@ class MessageLimitModelAdapter extends TypeAdapter<MessageLimitModel> {
     };
     return MessageLimitModel(
       isLimitFull: fields[0] as bool?,
+      messageCount: fields[1] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, MessageLimitModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.isLimitFull);
+      ..write(obj.isLimitFull)
+      ..writeByte(1)
+      ..write(obj.messageCount);
   }
 
   @override

@@ -9,14 +9,14 @@ class MessageBubbleWidget extends StatefulWidget {
   final String message;
   final CrossAxisAlignment alignment;
   final String sender;
-  final bool limitedMessage;
+  final bool messageView;
 
   const MessageBubbleWidget({
     Key? key,
     required this.message,
     required this.alignment,
     required this.sender,
-    required this.limitedMessage,
+    required this.messageView,
   }) : super(key: key);
 
   @override
@@ -151,7 +151,7 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                         Row(
                           children: [
                             Expanded(
-                              child: widget.limitedMessage == true
+                              child: widget.messageView
                                   ? lockMessage()
                                   : unlockMessage(),
                             ),

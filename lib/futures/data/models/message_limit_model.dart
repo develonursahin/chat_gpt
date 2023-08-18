@@ -6,5 +6,7 @@ part 'message_limit_model.g.dart';
 class MessageLimitModel {
   @HiveField(0)
   bool? isLimitFull;
-  MessageLimitModel({required this.isLimitFull});
+  @HiveField(1)
+  int? messageCount;
+  MessageLimitModel({required this.isLimitFull, required this.messageCount});
 }

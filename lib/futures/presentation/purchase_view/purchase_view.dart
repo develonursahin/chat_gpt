@@ -7,6 +7,7 @@ import 'package:chat_gpt/futures/presentation/common/widgets/custom_elevated_but
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.dart';
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.dart';
 import 'package:chat_gpt/futures/presentation/home_view/home_view.dart';
+import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
 import 'package:chat_gpt/futures/presentation/purchase_view/purcahse_view_model.dart';
 import 'package:chat_gpt/futures/presentation/purchase_view/widgets/purchase_card_widget.dart';
 import 'package:chat_gpt/futures/presentation/purchase_view/widgets/unlock_to_continue_widget.dart';
@@ -23,6 +24,7 @@ class PurchaseView extends StatefulWidget {
 
 class _PurchaseViewState extends State<PurchaseView> {
   late final PurchaseViewModel _purchaseViewModel;
+  late final HomeViewModel _homeViewModel;
 
   String? selectedPaymentOption;
   bool isLoad = false;
@@ -97,6 +99,7 @@ class _PurchaseViewState extends State<PurchaseView> {
                   if (isPaymentOptionSelected) {
                     await _purchaseViewModel
                         .updatePremiumAndShowDialog(context);
+                    await _homeViewModel.updateMessageLimit(false);
                   } else {
                     _showToast(context, 'Please select a payment option');
                   }

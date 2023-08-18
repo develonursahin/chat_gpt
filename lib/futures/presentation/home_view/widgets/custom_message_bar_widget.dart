@@ -1,4 +1,6 @@
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 
 class CustomMessageBarWidget extends StatelessWidget {
@@ -8,6 +10,7 @@ class CustomMessageBarWidget extends StatelessWidget {
     required this.hasText,
     required this.onSendPressed,
     required this.end,
+    required this.isLimitFull,
   })  : _messageController = messageController,
         super(key: key);
 
@@ -15,9 +18,19 @@ class CustomMessageBarWidget extends StatelessWidget {
   final bool hasText;
   final Function(String) onSendPressed;
   final VoidCallback end;
+  final bool isLimitFull;
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
+    Future<void> _getPremiumforMoreChat() async {
+      CustomNavigator.goToScreen(
+          context,
+          const PurchaseView(
+            openedFromOnboarding: true,
+          ));
+    }
+
     return Container(
       height: 65,
       decoration: BoxDecoration(
@@ -31,10 +44,11 @@ class CustomMessageBarWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextField(
+                enabled: isLimitFull ? false : true,
                 controller: _messageController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Say something...',
+                  hintText: isLimitFull ? 'Get Premium ->' : 'Say something...',
                   hintStyle: TextStyle(color: ColorConstant.instance.darkGrey),
                 ),
                 style: TextStyle(
@@ -47,16 +61,23 @@ class CustomMessageBarWidget extends StatelessWidget {
               ),
             ),
           ),
-          IconButton(
-            onPressed: () async {
-              await onSendPressed(_messageController.text);
-              end;
-            },
-            icon: const Icon(Icons.send, size: 30),
-            color: hasText
-                ? ColorConstant.instance.green
-                : ColorConstant.instance.darkGrey,
-          ),
+          isLimitFull
+              ? IconButton(
+                  onPressed: () async {
+                    await _getPremiumforMoreChat();
+                  },
+                  icon: Image.asset("assets/icons/diamond.png"))
+              : IconButton(
+                  onPressed: () async {
+                    await onSendPressed(_messageController.text);
+
+                    end;
+                  },
+                  icon: const Icon(Icons.send, size: 30),
+                  color: hasText
+                      ? ColorConstant.instance.green
+                      : ColorConstant.instance.darkGrey,
+                ),
         ],
       ),
     );
