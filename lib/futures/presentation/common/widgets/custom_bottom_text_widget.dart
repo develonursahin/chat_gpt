@@ -38,7 +38,7 @@ class CustomBottomTextWidget extends StatelessWidget {
         text,
         style: const TextStyle(
           decoration: TextDecoration.underline,
-          color: Colors.grey, // Örnek renk
+          color: Colors.grey,
         ),
       ),
     );
@@ -49,7 +49,7 @@ class CustomBottomTextWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       height: 20,
       width: 1,
-      color: Colors.grey, // Örnek renk
+      color: Colors.grey,
     );
   }
 

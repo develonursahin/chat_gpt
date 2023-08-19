@@ -4,12 +4,14 @@ import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.
 import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 
 class MessageBubbleWidget extends StatefulWidget {
   final String message;
   final CrossAxisAlignment alignment;
   final String sender;
   final bool messageView;
+  final bool isLoading;
 
   const MessageBubbleWidget({
     Key? key,
@@ -17,6 +19,7 @@ class MessageBubbleWidget extends StatefulWidget {
     required this.alignment,
     required this.sender,
     required this.messageView,
+    required this.isLoading,
   }) : super(key: key);
 
   @override
@@ -71,6 +74,14 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
         text: widget.message,
         fontWeight: FontWeight.w500,
         fontSize: 14,
+      );
+    }
+
+    Widget threeDotLoadingAnimation() {
+      return Lottie.asset(
+        'assets/animations/3dots.json',
+        width: 30,
+        fit: BoxFit.cover,
       );
     }
 
@@ -150,25 +161,29 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                       children: [
                         Row(
                           children: [
-                            Expanded(
-                              child: widget.messageView
-                                  ? lockMessage()
-                                  : unlockMessage(),
-                            ),
+                            widget.isLoading
+                                ? threeDotLoadingAnimation()
+                                : Expanded(
+                                    child: widget.messageView
+                                        ? lockMessage()
+                                        : unlockMessage(),
+                                  ),
                             if (widget.alignment == CrossAxisAlignment.start)
-                              IconButton(
-                                onPressed: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: widget.message));
-                                  _showCopiedMessagePopup(
-                                      'Message copied:\n${widget.message}');
-                                },
-                                icon: Icon(
-                                  Icons.content_copy_rounded,
-                                  size: 20,
-                                  color: ColorConstant.instance.grey,
-                                ),
-                              ),
+                              !widget.isLoading
+                                  ? IconButton(
+                                      onPressed: () {
+                                        Clipboard.setData(ClipboardData(
+                                            text: widget.message));
+                                        _showCopiedMessagePopup(
+                                            'Message copied:\n${widget.message}');
+                                      },
+                                      icon: Icon(
+                                        Icons.content_copy_rounded,
+                                        size: 20,
+                                        color: ColorConstant.instance.grey,
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
                           ],
                         ),
                       ],

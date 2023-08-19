@@ -6,12 +6,14 @@ import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.
 import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
 import 'package:chat_gpt/futures/presentation/home_view/widgets/custom_message_bar_widget.dart';
 import 'package:chat_gpt/futures/presentation/home_view/widgets/message_buble_widget.dart';
+import 'package:chat_gpt/futures/presentation/purchase_view/purcahse_view_model.dart';
 import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
 import 'package:chat_gpt/futures/presentation/settings_view/settings_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -27,8 +29,8 @@ class _HomeViewState extends State<HomeView> {
   final ScrollController _scrollController =
       ScrollController(keepScrollOffset: true);
   late HomeViewModel homeViewModel;
-
-  late MessageLimitLocalDataSource _messageLimitLocalDataSource;
+  late PurchaseViewModel purchaseViewModel;
+  bool isLoading = false;
 
   String robotResponse = '';
   int robotMessageCount = 0;
@@ -37,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
   bool messageView = false;
   bool isRequesting = false;
   bool isLimitFull = false;
+  int indexNow = 0;
 
   @override
   void initState() {
@@ -63,6 +66,7 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> _clearChat(bool isPremium) async {
     if (isPremium) {
+      showAlertDialog(context);
       await homeViewModel.clearChat();
       setState(() {});
     } else {
@@ -74,7 +78,62 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  Future<void> showAlertDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return FutureBuilder<bool>(
+          future: _delayed(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/loading.json',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/completed.json',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        );
+      },
+    );
+
+    await Future.delayed(const Duration(milliseconds: 450));
+
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  Future<bool> _delayed() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return true;
+  }
+
   Future<void> _sendMessage(String message) async {
+    setState(() {
+      isLoading = true;
+    });
     if (message.isNotEmpty && !isRequesting) {
       try {
         const apiKey = apiSecretKey;
@@ -111,6 +170,9 @@ class _HomeViewState extends State<HomeView> {
         }
       }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -168,7 +230,6 @@ class _HomeViewState extends State<HomeView> {
                   itemBuilder: (context, index) {
                     final message = watch.messages[index].message;
                     final sender = watch.messages[index].sender;
-                    print(watch.messageCount);
                     if (watch.isPremium) {
                       homeViewModel.updateMessageLimit(false);
 
@@ -189,8 +250,16 @@ class _HomeViewState extends State<HomeView> {
                       }
                       messageView = false;
                     }
+                    // indexNow++;
+                    // // Check if this is the last message
+                    // final bool isLastMessage =
+                    //     index == watch.messages.length - 1;
 
+                    // // Set isLoading to true only for the last robot message
+                    // final bool isLoadingForLastRobotMessage =
+                    //     sender == "robot" && isLastMessage && isLoading;
                     return MessageBubbleWidget(
+                      isLoading: sender == "robot" ? isLoading : false,
                       messageView: sender == "robot" &&
                               !watch.isPremium &&
                               index == watch.messages.length - 12

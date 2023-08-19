@@ -15,11 +15,11 @@ class PurchaseViewModel extends ChangeNotifier {
     final model = GetPremiumModel(isPremium: true);
     await _premiumLocalDataSource.update(model);
 
-    await _showAlertDialog(context);
+    await showAlertDialog(context);
     //CustomNavigator.goToScreen(context, const HomeView());
   }
 
-  Future<void> _showAlertDialog(BuildContext context) async {
+  Future<void> showAlertDialog(BuildContext context) async {
     showDialog(
       context: context,
       barrierDismissible: false,
