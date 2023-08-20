@@ -43,7 +43,6 @@ class HomeViewModel with ChangeNotifier {
   final PremiumLocalDataSource _premiumLocalDataSource =
       PremiumLocalDataSource();
   bool isPremium = false;
-
   bool isLimitFull = false;
   int messageCount = 0;
 
@@ -63,7 +62,6 @@ class HomeViewModel with ChangeNotifier {
     await getPremium();
     notifyListeners();
   }
-
 
   Future<void> getMessageLimit() async {
     if (messageLimitBox.isNotEmpty) {

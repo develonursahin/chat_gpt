@@ -14,7 +14,6 @@ class PurchaseViewModel extends ChangeNotifier {
   Future<void> updatePremiumAndShowDialog(BuildContext context) async {
     final model = GetPremiumModel(isPremium: true);
     await _premiumLocalDataSource.update(model);
-
     await showAlertDialog(context);
     //CustomNavigator.goToScreen(context, const HomeView());
   }

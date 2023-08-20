@@ -1,6 +1,5 @@
 import 'package:chat_gpt/futures/core/constants/apis/openai_api.dart';
 import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/data/datasource/message_limit_local_datasource.dart';
 import 'package:chat_gpt/futures/data/services/chat_repository.dart';
 import 'package:chat_gpt/futures/presentation/common/widgets/custom_logo_widget.dart';
 import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
@@ -122,6 +121,7 @@ class _HomeViewState extends State<HomeView> {
 
     await Future.delayed(const Duration(milliseconds: 450));
 
+    // ignore: use_build_context_synchronously
     Navigator.of(context, rootNavigator: true).pop();
   }
 
@@ -274,15 +274,19 @@ class _HomeViewState extends State<HomeView> {
                   },
                 ),
               ),
-              CustomMessageBarWidget(
-                isLimitFull: watch.isLimitFull,
-                messageController: _messageController,
-                hasText: hasText,
-                onSendPressed: _sendMessage,
-                end: () {
-                  _scrollDown();
+              Consumer<HomeViewModel>(
+                builder: (context, homeViewModel, child) {
+                  return CustomMessageBarWidget(
+                    isLimitFull: watch.isLimitFull,
+                    messageController: _messageController,
+                    hasText: hasText,
+                    onSendPressed: _sendMessage,
+                    end: () {
+                      _scrollDown();
+                    },
+                  );
                 },
-              ),
+              )
             ],
           ),
         ),

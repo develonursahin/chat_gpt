@@ -56,7 +56,7 @@ class CustomMessageBarWidget extends StatelessWidget {
                       ? ColorConstant.instance.white
                       : ColorConstant.instance.darkGreen,
                 ),
-                maxLines: null, // Allow multiple lines
+                maxLines: null,
                 textInputAction: TextInputAction.newline,
               ),
             ),
@@ -70,8 +70,7 @@ class CustomMessageBarWidget extends StatelessWidget {
               : IconButton(
                   onPressed: () async {
                     await onSendPressed(_messageController.text);
-
-                    end;
+                                        end;
                   },
                   icon: const Icon(Icons.send, size: 30),
                   color: hasText

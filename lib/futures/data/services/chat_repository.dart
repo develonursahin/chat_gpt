@@ -24,6 +24,6 @@ Future<String> generateText(String prompt, String apiKey) async {
     return result['choices'][0]['text'];
   } else {
     return result['error']['message'];
-    throw Exception('API request failed: ${response.statusCode}');
+    // throw Exception('API request failed: ${response.statusCode}');
   }
 }
