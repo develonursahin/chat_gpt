@@ -48,6 +48,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     _onboardingViewModel = OnboardingViewModel();
     _onboardingViewModel.createOnboard();
     _onboardingViewModel.getPremium();
+    _onboardingViewModel.init();
   }
 
   @override

@@ -4,26 +4,30 @@ import 'package:chat_gpt/futures/data/datasource/onboarding_local_datasource.dar
 import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
 import 'package:chat_gpt/futures/data/models/get_premium_model.dart';
 import 'package:chat_gpt/futures/data/models/message_limit_model.dart';
+import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
 
 class SplashViewModel {
   late OnboardingLocalDataSource _onboardingLocalDataSource;
   late PremiumLocalDataSource _premiumLocalDataSource;
   late MessageLimitLocalDataSource _messageLimitLocalDataSource;
+  final HomeViewModel _homeViewModel = HomeViewModel();
 
   bool firstOpen = false;
   bool isPremium = false;
+  String firstMessage = "Hi, how can i help you?";
+  String sender = 'robot';
 
   Future<void> init(Function navigate) async {
     _onboardingLocalDataSource = OnboardingLocalDataSource();
     _premiumLocalDataSource = PremiumLocalDataSource();
     _messageLimitLocalDataSource = MessageLimitLocalDataSource();
-
     await createPremium();
     await getOnboard();
     await getPremium();
     await createMessageLimit();
     navigate();
   }
+
 
   Future<void> createPremium() async {
     if (getPremiumBox.isEmpty) {

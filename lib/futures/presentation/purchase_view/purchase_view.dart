@@ -35,6 +35,7 @@ class _PurchaseViewState extends State<PurchaseView> {
   void initState() {
     super.initState();
     _purchaseViewModel = PurchaseViewModel();
+    _homeViewModel = HomeViewModel();
   }
 
   @override

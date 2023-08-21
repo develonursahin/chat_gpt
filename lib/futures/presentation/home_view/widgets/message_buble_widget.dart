@@ -1,10 +1,10 @@
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.dart';
-import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
+import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.dart';
 
 class MessageBubbleWidget extends StatefulWidget {
   final String message;
@@ -33,13 +33,7 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) {
-        setState(() {
-          showLoading = false;
-        });
-      }
-    });
+    _startLoadingAnimation();
   }
 
   @override
@@ -48,82 +42,90 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
     super.dispose();
   }
 
+  void _startLoadingAnimation() async {
+    await Future.delayed(const Duration(milliseconds: 1500));
+    if (!disposed) {
+      setState(() {
+        showLoading = false;
+      });
+    }
+  }
+
+  void _showCopiedMessagePopup(String copiedMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return SizedBox(
+          height: 150,
+          width: 150,
+          child: AlertDialog(
+            backgroundColor: Colors.black.withOpacity(0.8),
+            title: const CustomTextWidget(
+              text: "Copied!",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget unlockMessage() {
+    return CustomTextWidget(
+      text: widget.message,
+      fontWeight: FontWeight.w500,
+      fontSize: 14,
+    );
+  }
+
+  Widget threeDotLoadingAnimation() {
+    return Lottie.asset(
+      'assets/animations/3dots.json',
+      width: 30,
+      fit: BoxFit.cover,
+    );
+  }
+
+  Widget lockMessage() {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Text(
+          widget.message.substring(0, 10),
+          style: const TextStyle(color: Colors.white),
+        ),
+        TextButton(
+          onPressed: () {
+            CustomNavigator.goToScreen(
+              context,
+              const PurchaseView(openedFromOnboarding: true),
+            );
+          },
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: ColorConstant.instance.transparent,
+                child: Image.asset('assets/icons/lock.png'),
+              ),
+              const CustomTextWidget(
+                text: "Top to Unlock",
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    void _showCopiedMessagePopup(String copiedMessage) {
-      showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return SizedBox(
-            height: 150,
-            width: 150,
-            child: AlertDialog(
-                backgroundColor: Colors.black.withOpacity(0.8),
-                title: const CustomTextWidget(
-                  text: "Copied!",
-                  textAlign: TextAlign.center,
-                )),
-          );
-        },
-      );
-    }
-
-    Widget unlockMessage() {
-      return CustomTextWidget(
-        text: widget.message,
-        fontWeight: FontWeight.w500,
-        fontSize: 14,
-      );
-    }
-
-    Widget threeDotLoadingAnimation() {
-      return Lottie.asset(
-        'assets/animations/3dots.json',
-        width: 30,
-        fit: BoxFit.cover,
-      );
-    }
-
-    Widget lockMessage() {
-      return Column(
-        children: [
-          const SizedBox(height: 10),
-          Text(
-            widget.message.substring(0, 10),
-            style: const TextStyle(color: Colors.white),
-          ),
-          TextButton(
-            onPressed: () {
-              CustomNavigator.goToScreen(
-                  context,
-                  const PurchaseView(
-                    openedFromOnboarding: true,
-                  ));
-            },
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: ColorConstant.instance.transparent,
-                  child: Image.asset('assets/icons/lock.png'),
-                ),
-                const CustomTextWidget(
-                  text: "Top to Unlock",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                ),
-              ],
-            ),
-          )
-        ],
-      );
-    }
-
     return Column(
       crossAxisAlignment: widget.alignment,
       children: [
         SizedBox(
-          width: MediaQuery.sizeOf(context).width * 3 / 5,
+          width: MediaQuery.of(context).size.width * 3 / 5,
           child: Row(
             children: [
               if (widget.alignment == CrossAxisAlignment.start)
@@ -161,29 +163,29 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                       children: [
                         Row(
                           children: [
-                            widget.isLoading
-                                ? threeDotLoadingAnimation()
-                                : Expanded(
-                                    child: widget.messageView
-                                        ? lockMessage()
-                                        : unlockMessage(),
-                                  ),
-                            if (widget.alignment == CrossAxisAlignment.start)
-                              !widget.isLoading
-                                  ? IconButton(
-                                      onPressed: () {
-                                        Clipboard.setData(ClipboardData(
-                                            text: widget.message));
-                                        _showCopiedMessagePopup(
-                                            'Message copied:\n${widget.message}');
-                                      },
-                                      icon: Icon(
-                                        Icons.content_copy_rounded,
-                                        size: 20,
-                                        color: ColorConstant.instance.grey,
-                                      ),
-                                    )
-                                  : const SizedBox.shrink(),
+                            if (widget.isLoading)
+                              threeDotLoadingAnimation()
+                            else
+                              Expanded(
+                                child: widget.messageView
+                                    ? lockMessage()
+                                    : unlockMessage(),
+                              ),
+                            if (widget.alignment == CrossAxisAlignment.start &&
+                                !widget.isLoading)
+                              IconButton(
+                                onPressed: () {
+                                  Clipboard.setData(
+                                      ClipboardData(text: widget.message));
+                                  _showCopiedMessagePopup(
+                                      'Message copied:\n${widget.message}');
+                                },
+                                icon: Icon(
+                                  Icons.content_copy_rounded,
+                                  size: 20,
+                                  color: ColorConstant.instance.grey,
+                                ),
+                              ),
                           ],
                         ),
                       ],
