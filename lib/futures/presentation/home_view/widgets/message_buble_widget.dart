@@ -175,10 +175,10 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
                                 !widget.isLoading)
                               IconButton(
                                 onPressed: () {
-                                  Clipboard.setData(
-                                      ClipboardData(text: widget.message));
+                                  Clipboard.setData(ClipboardData(
+                                      text: widget.message.substring(0, 10)));
                                   _showCopiedMessagePopup(
-                                      'Message copied:\n${widget.message}');
+                                      'Message copied:\n${widget.message.substring(0, 10)}');
                                 },
                                 icon: Icon(
                                   Icons.content_copy_rounded,
