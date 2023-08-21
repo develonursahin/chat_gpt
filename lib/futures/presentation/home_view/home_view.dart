@@ -104,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
                       messageView = false;
                     }
                     return MessageBubbleWidget(
-                      isLoading: sender == "robot" ? isLoading : false,
+                      isLoading: sender == "robot" ? watch.isLoading : false,
                       messageView: sender == "robot" &&
                               !watch.isPremium &&
                               index == watch.messages.length - 13
