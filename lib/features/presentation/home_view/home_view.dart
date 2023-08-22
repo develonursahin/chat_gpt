@@ -1,4 +1,4 @@
-import 'package:chat_gpt/features/core/constants/apis/openai_api.dart';
+import 'package:chat_gpt/features/core/constants/apis/open_ai_api.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/data/services/chat_repository.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_logo_widget.dart';
