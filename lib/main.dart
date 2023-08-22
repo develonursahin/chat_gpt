@@ -1,7 +1,7 @@
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/presentation/views/home_view/home_view.dart';
-import 'package:chat_gpt/futures/presentation/views/settings_view/settings_view.dart';
-import 'package:chat_gpt/futures/presentation/views/splash_view/splash_view.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/presentation/views/home_view/home_view.dart';
+import 'package:chat_gpt/features/presentation/views/settings_view/settings_view.dart';
+import 'package:chat_gpt/features/presentation/views/splash_view/splash_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {

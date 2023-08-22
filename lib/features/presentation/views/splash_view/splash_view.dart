@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/views/home_view/home_view.dart';
-import 'package:chat_gpt/futures/presentation/views/onboarding_view/onboarding_view.dart';
+import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/features/presentation/views/home_view/home_view.dart';
+import 'package:chat_gpt/features/presentation/views/onboarding_view/onboarding_view.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {

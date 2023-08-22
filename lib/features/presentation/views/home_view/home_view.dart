@@ -1,8 +1,8 @@
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_logo_widget.dart';
-import 'package:chat_gpt/futures/presentation/views/settings_view/settings_view.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_logo_widget.dart';
+import 'package:chat_gpt/features/presentation/views/settings_view/settings_view.dart';
 import 'package:flutter/services.dart';
 
 class HomeView extends StatefulWidget {

@@ -1,7 +1,7 @@
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_elevated_button.dart';
-import 'package:chat_gpt/futures/presentation/views/purchase_view/purchase_view.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_elevated_button.dart';
+import 'package:chat_gpt/features/presentation/views/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingView extends StatefulWidget {

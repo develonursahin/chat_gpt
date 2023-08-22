@@ -1,4 +1,4 @@
-import 'package:chat_gpt/futures/presentation/views/common/common_views.dart';
+import 'package:chat_gpt/features/presentation/views/common/common_views.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomTextWidget extends StatelessWidget {

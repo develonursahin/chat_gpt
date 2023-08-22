@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_text_widget.dart';
 
 class PurchaseCard extends StatelessWidget {
   final bool isSelected;

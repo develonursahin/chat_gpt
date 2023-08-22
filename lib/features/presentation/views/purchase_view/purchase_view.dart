@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_bottom_text_widget.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_elevated_button.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_logo_widget.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
-import 'package:chat_gpt/futures/presentation/views/home_view/home_view.dart';
-import 'package:chat_gpt/futures/presentation/views/purchase_view/widgets/purchase_card_widget.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_bottom_text_widget.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_elevated_button.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_logo_widget.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/features/presentation/views/home_view/home_view.dart';
+import 'package:chat_gpt/features/presentation/views/purchase_view/widgets/purchase_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

@@ -1,8 +1,8 @@
-import 'package:chat_gpt/futures/presentation/views/common/common_views.dart';
+import 'package:chat_gpt/features/presentation/views/common/common_views.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/presentation/views/common/widgets/custom_text_widget.dart';
-import 'package:chat_gpt/futures/presentation/views/purchase_view/purchase_view.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/presentation/views/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/features/presentation/views/purchase_view/purchase_view.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
