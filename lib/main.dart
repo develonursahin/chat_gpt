@@ -1,8 +1,8 @@
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/core/hive/hive_box.dart';
-import 'package:chat_gpt/futures/presentation/home_view/chat_view_model.dart';
-import 'package:chat_gpt/futures/presentation/home_view/home_view_model.dart';
-import 'package:chat_gpt/futures/presentation/splash_view/splash_view.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/hive/hive_box.dart';
+import 'package:chat_gpt/features/presentation/home_view/chat_view_model.dart';
+import 'package:chat_gpt/features/presentation/home_view/home_view_model.dart';
+import 'package:chat_gpt/features/presentation/splash_view/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
