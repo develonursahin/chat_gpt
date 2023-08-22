@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<String> generateText(String prompt, String apiKey) async {
-  final String apiUrl =
+  const String apiUrl =
       'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
   final Map<String, String> headers = {
