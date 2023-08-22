@@ -31,7 +31,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-/lib/futures/core/constants/apis/openai_api.dart
+/lib/features/core/constants/apis/openai_api.dart
 
 # Symbolication related
 app.*.symbols
