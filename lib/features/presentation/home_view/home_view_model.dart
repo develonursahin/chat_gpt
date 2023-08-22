@@ -1,4 +1,4 @@
-import 'package:chat_gpt/features/core/constants/apis/openai_api.dart';
+import 'package:chat_gpt/features/core/constants/apis/open_ai_api.dart';
 import 'package:chat_gpt/features/core/hive/hive_box.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/data/datasource/message_limit_local_datasource.dart';
