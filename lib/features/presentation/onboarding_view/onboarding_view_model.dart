@@ -1,6 +1,6 @@
-import 'package:chat_gpt/futures/data/datasource/onboarding_local_datasource.dart';
-import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
-import 'package:chat_gpt/futures/data/models/onboarding_model.dart';
+import 'package:chat_gpt/features/data/datasource/onboarding_local_datasource.dart';
+import 'package:chat_gpt/features/data/datasource/premium_local_data_source.dart';
+import 'package:chat_gpt/features/data/models/onboarding_model.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingViewModel extends ChangeNotifier {

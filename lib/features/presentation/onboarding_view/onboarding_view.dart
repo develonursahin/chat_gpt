@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/presentation/common/widgets/custom_elevated_button.dart';
-import 'package:chat_gpt/futures/presentation/home_view/home_view.dart';
-import 'package:chat_gpt/futures/presentation/onboarding_view/onboarding_view_model.dart';
-import 'package:chat_gpt/futures/presentation/purchase_view/purchase_view.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/features/presentation/common/widgets/custom_elevated_button.dart';
+import 'package:chat_gpt/features/presentation/home_view/home_view.dart';
+import 'package:chat_gpt/features/presentation/onboarding_view/onboarding_view_model.dart';
+import 'package:chat_gpt/features/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingView extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:chat_gpt/futures/core/hive/hive_box.dart';
-import 'package:chat_gpt/futures/data/models/get_premium_model.dart';
+import 'package:chat_gpt/features/core/hive/hive_box.dart';
+import 'package:chat_gpt/features/data/models/get_premium_model.dart';
 
 class PremiumLocalDataSource {
   Future<void> create(GetPremiumModel model) async {

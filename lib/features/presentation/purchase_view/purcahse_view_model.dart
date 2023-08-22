@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:chat_gpt/futures/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
-import 'package:chat_gpt/futures/data/models/get_premium_model.dart';
-import 'package:chat_gpt/futures/presentation/home_view/home_view.dart';
+import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
+import 'package:chat_gpt/features/data/datasource/premium_local_data_source.dart';
+import 'package:chat_gpt/features/data/models/get_premium_model.dart';
+import 'package:chat_gpt/features/presentation/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

@@ -1,9 +1,9 @@
-import 'package:chat_gpt/futures/data/datasource/premium_local_data_source.dart';
-import 'package:chat_gpt/futures/presentation/common/widgets/custom_text_widget.dart';
-import 'package:chat_gpt/futures/presentation/settings_view/widgets/get_premium_button_widget.dart';
-import 'package:chat_gpt/futures/presentation/settings_view/widgets/settings_pages_buttons_widget.dart';
+import 'package:chat_gpt/features/data/datasource/premium_local_data_source.dart';
+import 'package:chat_gpt/features/presentation/common/widgets/custom_text_widget.dart';
+import 'package:chat_gpt/features/presentation/settings_view/widgets/get_premium_button_widget.dart';
+import 'package:chat_gpt/features/presentation/settings_view/widgets/settings_pages_buttons_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_gpt/futures/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({Key? key}) : super(key: key);

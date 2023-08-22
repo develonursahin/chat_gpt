@@ -1,7 +1,7 @@
-import 'package:chat_gpt/futures/data/models/chat_model.dart';
-import 'package:chat_gpt/futures/data/models/get_premium_model.dart';
-import 'package:chat_gpt/futures/data/models/message_limit_model.dart';
-import 'package:chat_gpt/futures/data/models/onboarding_model.dart';
+import 'package:chat_gpt/features/data/models/chat_model.dart';
+import 'package:chat_gpt/features/data/models/get_premium_model.dart';
+import 'package:chat_gpt/features/data/models/message_limit_model.dart';
+import 'package:chat_gpt/features/data/models/onboarding_model.dart';
 import 'package:hive/hive.dart';
 
 late Box<MessageLimitModel> messageLimitBox;
