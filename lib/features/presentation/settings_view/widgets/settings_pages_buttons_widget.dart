@@ -1,4 +1,5 @@
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/presentation/common/common_views.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
@@ -10,39 +11,43 @@ class SettingPagesButtonsWidget extends StatelessWidget {
 
   final List<Map<String, dynamic>> settingsItems = [
     {
-      'imagePath': 'assets/icons/rate_us.png',
-      'title': 'Rate Us',
-      'content': 'Rate Us Page Content',
+      TextConstants.instance.imagePath: TextConstants.instance.rateusPath,
+      TextConstants.instance.title: TextConstants.instance.rateUs,
+      TextConstants.instance.content: TextConstants.instance.rateUsPageUrl,
     },
     {
-      'imagePath': 'assets/icons/contact_us.png',
-      'title': 'Contact Us',
-      'content': 'Contact Us Page Content',
+      TextConstants.instance.imagePath: TextConstants.instance.contactUsPath,
+      TextConstants.instance.title: TextConstants.instance.contactUs,
+      TextConstants.instance.content: TextConstants.instance.contactUsPageUrl,
     },
     {
-      'imagePath': 'assets/icons/privacy_policy.png',
-      'title': 'Privacy Policy',
-      'content': 'Privacy Policy Page Content',
+      TextConstants.instance.imagePath:
+          TextConstants.instance.privacyPolicyPath,
+      TextConstants.instance.title: TextConstants.instance.privacyPolicy,
+      TextConstants.instance.content:
+          TextConstants.instance.privacyPolicyPageUrl,
     },
     {
-      'imagePath': 'assets/icons/terms_of_use.png',
-      'title': 'Terms of Use',
-      'content': 'Terms of Use Page Content',
+      TextConstants.instance.imagePath: TextConstants.instance.termsOfUsePath,
+      TextConstants.instance.title: TextConstants.instance.termsOfUse,
+      TextConstants.instance.content: TextConstants.instance.termsOfUsePageUrl,
     },
     {
-      'imagePath': 'assets/icons/restore_purchase.png',
-      'title': 'Restore Purchase',
-      'content': 'Restore Purchase Page Content',
+      TextConstants.instance.imagePath:
+          TextConstants.instance.restorePurchasePath,
+      TextConstants.instance.title: TextConstants.instance.restorePurchase,
+      TextConstants.instance.content:
+          TextConstants.instance.restorePurchasePageUrl,
     },
   ];
 
-  void _openSettingsPage(BuildContext context, String title, String content) {
+  void _openSettingsPage(BuildContext context, String title, String url) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DynamicPage(
           title: title,
-          content: content,
+          url: url,
         ),
       ),
     );
@@ -60,31 +65,36 @@ class SettingPagesButtonsWidget extends StatelessWidget {
           for (var item in settingsItems)
             InkWell(
               onTap: () {
-                _openSettingsPage(context, item['title'], item['content']);
+                _openSettingsPage(context, item[TextConstants.instance.title],
+                    item[TextConstants.instance.content]);
               },
               child: Container(
                 decoration: BoxDecoration(
                   border: BorderDirectional(
                     bottom: BorderSide(
-                      color: ColorConstant.instance.darkGreen,
+                      // ignore: unrelated_type_equality_checks
+                      color: item != settingsItems.last
+                          ? ColorConstant.instance.darkGreen
+                          : ColorConstant.instance.transparent,
                     ),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(18),
                   child: Row(
                     children: [
                       Expanded(
                         flex: 20,
                         child: CircleAvatar(
                           backgroundColor: ColorConstant.instance.transparent,
-                          child: Image.asset(item['imagePath']),
+                          child: Image.asset(
+                              item[TextConstants.instance.imagePath]),
                         ),
                       ),
                       Expanded(
                         flex: 95,
                         child: CustomTextWidget(
-                          text: item['title'],
+                          text: item[TextConstants.instance.title],
                           fontWeight: FontWeight.w500,
                           fontSize: 19,
                         ),

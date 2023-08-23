@@ -1,4 +1,5 @@
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextWidget extends StatelessWidget {
@@ -28,7 +29,7 @@ class CustomTextWidget extends StatelessWidget {
             : ColorConstant.instance.white,
         fontSize: fontSize,
         fontWeight: fontWeight,
-        fontFamily: 'Inter',
+        fontFamily: TextConstants.instance.fontFamily,
       ),
     );
   }

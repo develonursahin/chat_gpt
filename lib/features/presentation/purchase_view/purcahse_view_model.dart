@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/data/datasource/premium_local_data_source.dart';
 import 'package:chat_gpt/features/data/models/get_premium_model.dart';
@@ -32,7 +33,7 @@ class PurchaseViewModel extends ChangeNotifier {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Lottie.asset(
-                      'assets/animations/loading.json',
+                      TextConstants.instance.loadingJsonPath,
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
@@ -46,7 +47,7 @@ class PurchaseViewModel extends ChangeNotifier {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Lottie.asset(
-                      'assets/animations/completed.json',
+                      TextConstants.instance.completedJsonPath,
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/presentation/home_view/home_view.dart';
 import 'package:chat_gpt/features/presentation/onboarding_view/onboarding_view.dart';
@@ -44,7 +45,7 @@ class _SplashViewState extends State<SplashView> {
               const Spacer(
                 flex: 3,
               ),
-              Image.asset("assets/icons/splash.png"),
+              Image.asset(TextConstants.instance.splashPath),
               const Spacer(
                 flex: 2,
               ),

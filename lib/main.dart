@@ -1,5 +1,7 @@
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/hive/hive_box.dart';
+import 'package:chat_gpt/features/presentation/home_view/chat_view_model.dart';
 import 'package:chat_gpt/features/presentation/home_view/home_view_model.dart';
 import 'package:chat_gpt/features/presentation/splash_view/splash_view.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Chat GPT',
+      title: TextConstants.instance.appTitle,
       theme: ThemeData(
         scaffoldBackgroundColor: ColorConstant.instance.black,
         primaryColor: ColorConstant.instance.green,

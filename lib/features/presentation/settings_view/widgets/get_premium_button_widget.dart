@@ -1,4 +1,5 @@
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_text_widget.dart';
 import 'package:chat_gpt/features/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +33,12 @@ class GetPremiumCardWidget extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                    flex: 30, child: Image.asset("assets/icons/diamond.png")),
-                const Expanded(
+                    flex: 30,
+                    child: Image.asset(TextConstants.instance.diamondPath)),
+                Expanded(
                   flex: 95,
                   child: CustomTextWidget(
-                      text: "Get Premium!",
+                      text: TextConstants.instance.getPremiumSettings,
                       fontWeight: FontWeight.w600,
                       fontSize: 20),
                 ),

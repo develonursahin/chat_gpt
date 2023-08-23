@@ -17,7 +17,6 @@ class SplashViewModel {
     _onboardingLocalDataSource = OnboardingLocalDataSource();
     _premiumLocalDataSource = PremiumLocalDataSource();
     _messageLimitLocalDataSource = MessageLimitLocalDataSource();
-
     await createPremium();
     await getOnboard();
     await getPremium();
