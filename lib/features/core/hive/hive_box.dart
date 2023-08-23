@@ -1,3 +1,4 @@
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/data/models/chat_model.dart';
 import 'package:chat_gpt/features/data/models/get_premium_model.dart';
 import 'package:chat_gpt/features/data/models/message_limit_model.dart';
@@ -17,8 +18,10 @@ void hiveRegisterAdapter() {
 }
 
 Future<void> hiveBox() async {
-  getPremiumBox = await Hive.openBox<GetPremiumModel>('premium_model');
-  onboardingBox = await Hive.openBox<OnboardingModel>('onboarding_model');
-  messageLimitBox =
-      await Hive.openBox<MessageLimitModel>('message_limit_model');
+  getPremiumBox =
+      await Hive.openBox<GetPremiumModel>(TextConstants.instance.premiumModel);
+  onboardingBox = await Hive.openBox<OnboardingModel>(
+      TextConstants.instance.onboardingModel);
+  messageLimitBox = await Hive.openBox<MessageLimitModel>(
+      TextConstants.instance.messageLimitModel);
 }

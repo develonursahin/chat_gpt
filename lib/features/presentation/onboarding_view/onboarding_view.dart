@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_elevated_button.dart';
 import 'package:chat_gpt/features/presentation/home_view/home_view.dart';
@@ -68,7 +69,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 duration: const Duration(milliseconds: 500),
                 child: Image.asset(
                   _onboardingViewModel.onboardingData[currentPageIndex]
-                      ['imagePath']!,
+                      [TextConstants.instance.imagePath]!,
                   key: ValueKey<int>(currentPageIndex),
                   fit: BoxFit.cover,
                   height: sizeOf * 0.80,
@@ -91,7 +92,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           text: _onboardingViewModel
-                              .onboardingData[currentPageIndex]['text1'],
+                                  .onboardingData[currentPageIndex]
+                              [TextConstants.instance.text1],
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 25,
@@ -100,7 +102,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                           children: <TextSpan>[
                             TextSpan(
                               text:
-                                  " ${_onboardingViewModel.onboardingData[currentPageIndex]['text2']}",
+                                  " ${_onboardingViewModel.onboardingData[currentPageIndex][TextConstants.instance.text2]}",
                               style: TextStyle(
                                 color: primaryColor,
                                 fontSize: 25,
@@ -112,7 +114,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       ),
                       Text(
                         _onboardingViewModel.onboardingData[currentPageIndex]
-                            ['text3']!,
+                            [TextConstants.instance.text3]!,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -140,7 +142,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                           onPressed: () async {
                             await nextPage();
                           },
-                          buttonText: "Next")
+                          buttonText: TextConstants.instance.next)
                     ],
                   ),
                 ),

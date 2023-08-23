@@ -1,3 +1,4 @@
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -11,7 +12,6 @@ class MessageBubbleWidget extends StatefulWidget {
   final CrossAxisAlignment alignment;
   final String sender;
   final bool messageView;
-  final bool isLoading;
 
   const MessageBubbleWidget({
     Key? key,
@@ -19,7 +19,6 @@ class MessageBubbleWidget extends StatefulWidget {
     required this.alignment,
     required this.sender,
     required this.messageView,
-    required this.isLoading,
   }) : super(key: key);
 
   @override
@@ -29,6 +28,7 @@ class MessageBubbleWidget extends StatefulWidget {
 class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
   bool disposed = false;
   bool showLoading = true;
+  double characterLength = 2.5;
 
   @override
   void initState() {
@@ -60,8 +60,8 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
           width: 150,
           child: AlertDialog(
             backgroundColor: Colors.black.withOpacity(0.8),
-            title: const CustomTextWidget(
-              text: "Copied!",
+            title: CustomTextWidget(
+              text: TextConstants.instance.copied,
               textAlign: TextAlign.center,
             ),
           ),
@@ -80,7 +80,7 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
 
   Widget threeDotLoadingAnimation() {
     return Lottie.asset(
-      'assets/animations/3dots.json',
+      TextConstants.instance.threeDotsJsonPath,
       width: 30,
       fit: BoxFit.cover,
     );
@@ -105,10 +105,10 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
             children: [
               CircleAvatar(
                 backgroundColor: ColorConstant.instance.transparent,
-                child: Image.asset('assets/icons/lock.png'),
+                child: Image.asset(TextConstants.instance.lockImagePath),
               ),
-              const CustomTextWidget(
-                text: "Top to Unlock",
+              CustomTextWidget(
+                text: TextConstants.instance.topToUnlock,
                 fontWeight: FontWeight.w500,
                 fontSize: 12,
               ),
@@ -121,79 +121,93 @@ class _MessageBubbleWidgetState extends State<MessageBubbleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    int length = widget.message.length;
+
     return Column(
       crossAxisAlignment: widget.alignment,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 3 / 5,
-          child: Row(
-            children: [
-              if (widget.alignment == CrossAxisAlignment.start)
-                Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: CircleAvatar(
-                    maxRadius: 10,
-                    minRadius: 10,
-                    backgroundColor: Colors.transparent,
-                    child: Image.asset(
-                      "assets/icons/robot.png",
+          width: length < 20 ? null : MediaQuery.of(context).size.width * 3 / 5,
+          child: IntrinsicWidth(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (widget.alignment == CrossAxisAlignment.start)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: CircleAvatar(
+                      maxRadius: 10,
+                      minRadius: 10,
+                      backgroundColor: Colors.transparent,
+                      child: Image.asset(TextConstants.instance.robotImagePath),
                     ),
                   ),
-                ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(16),
-                      topRight: widget.alignment == CrossAxisAlignment.end
-                          ? const Radius.circular(0)
-                          : const Radius.circular(16),
-                      bottomRight: const Radius.circular(16),
-                      bottomLeft: widget.alignment == CrossAxisAlignment.start
-                          ? const Radius.circular(0)
-                          : const Radius.circular(16),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(16),
+                        topRight: widget.alignment == CrossAxisAlignment.end
+                            ? const Radius.circular(0)
+                            : const Radius.circular(16),
+                        bottomRight: const Radius.circular(16),
+                        bottomLeft: widget.alignment == CrossAxisAlignment.start
+                            ? const Radius.circular(0)
+                            : const Radius.circular(16),
+                      ),
+                      color: widget.alignment == CrossAxisAlignment.end
+                          ? ColorConstant.instance.green
+                          : ColorConstant.instance.textFormFieldColor,
                     ),
-                    color: widget.alignment == CrossAxisAlignment.end
-                        ? ColorConstant.instance.green
-                        : ColorConstant.instance.textFormFieldColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            if (widget.isLoading)
-                              threeDotLoadingAnimation()
-                            else
-                              Expanded(
-                                child: widget.messageView
-                                    ? lockMessage()
-                                    : unlockMessage(),
-                              ),
-                            if (widget.alignment == CrossAxisAlignment.start &&
-                                !widget.isLoading)
-                              IconButton(
-                                onPressed: () {
-                                  Clipboard.setData(ClipboardData(
-                                      text: widget.message.substring(0, 10)));
-                                  _showCopiedMessagePopup(
-                                      'Message copied:\n${widget.message.substring(0, 10)}');
-                                },
-                                icon: Icon(
-                                  Icons.content_copy_rounded,
-                                  size: 20,
-                                  color: ColorConstant.instance.grey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              if (widget.message ==
+                                  TextConstants.instance.emptyMessage)
+                                threeDotLoadingAnimation()
+                              else
+                                Expanded(
+                                  child: widget.messageView
+                                      ? lockMessage()
+                                      : unlockMessage(),
                                 ),
-                              ),
-                          ],
-                        ),
-                      ],
+                              if (widget.alignment == CrossAxisAlignment.start)
+                                widget.message !=
+                                        TextConstants.instance.emptyMessage
+                                    ? IconButton(
+                                        onPressed: () {
+                                          widget.messageView
+                                              ? Clipboard.setData(ClipboardData(
+                                                  text: widget.message
+                                                      .substring(0, 10)))
+                                              : Clipboard.setData(ClipboardData(
+                                                  text: widget.message));
+                                          widget.messageView
+                                              ? _showCopiedMessagePopup(widget
+                                                  .message
+                                                  .substring(0, 10))
+                                              : _showCopiedMessagePopup(
+                                                  widget.message);
+                                        },
+                                        icon: Icon(
+                                          Icons.content_copy_rounded,
+                                          size: 20,
+                                          color: ColorConstant.instance.grey,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 20),

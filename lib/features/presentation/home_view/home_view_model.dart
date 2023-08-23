@@ -1,4 +1,5 @@
 import 'package:chat_gpt/features/core/constants/apis/open_ai_api.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/hive/hive_box.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/data/datasource/message_limit_local_datasource.dart';
@@ -26,10 +27,7 @@ class HomeViewModel with ChangeNotifier {
   bool isLimitFull = false;
   bool isLoading = false;
   bool isRequesting = false;
-  String robotResponse = '';
-  String firstMessage = "Hi, how can i help you?";
   bool hasText = false;
-  String sender = 'robot';
   int apiRequestCount = 0;
   int messageCount = 0;
   int robotMessageCount = 0;
@@ -62,9 +60,11 @@ class HomeViewModel with ChangeNotifier {
 
   Future<void> clearChat(BuildContext context) async {
     if (isPremium) {
+      messageController.clear();
       showAlertDialog(context);
       chatProvider.clearChatProvider();
-      chatProvider.addMessage(firstMessage, sender);
+      chatProvider.addMessage(
+          TextConstants.instance.firstMessage, TextConstants.instance.sender);
       notifyListeners();
     } else {
       CustomNavigator.goToScreen(
@@ -94,7 +94,7 @@ class HomeViewModel with ChangeNotifier {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Lottie.asset(
-                      'assets/animations/loading.json',
+                      TextConstants.instance.loadingJsonPath,
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
@@ -108,7 +108,7 @@ class HomeViewModel with ChangeNotifier {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Lottie.asset(
-                      'assets/animations/completed.json',
+                      TextConstants.instance.completedJsonPath,
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
@@ -128,7 +128,6 @@ class HomeViewModel with ChangeNotifier {
   }
 
   Future<void> sendMessage(String message) async {
-    isLoading = true;
     if (message.isNotEmpty && !isRequesting) {
       try {
         const apiKey = apiSecretKey;
@@ -136,17 +135,25 @@ class HomeViewModel with ChangeNotifier {
         messageCount++;
         updateMessageLimit(isLimitFull);
         isRequesting = true;
-        addUserMessage(message);
+        addUserMessage(message.trim());
         messageController.clear();
-        robotResponse = await generateText(message, apiKey);
+        chatProvider.addEmptyMessage();
+        isLoading = true;
+
+        TextConstants.instance.robotResponse =
+            await generateText(message, apiKey);
         await Future.delayed(const Duration(milliseconds: 450));
-        chatProvider.addMessage(robotResponse, 'robot');
+        chatProvider.addMessage(
+            TextConstants.instance.robotResponse, TextConstants.instance.robot);
         robotMessageCount++;
+        chatProvider.deleteEmptyMessage();
         isRequesting = false;
         scrollDown();
         await getMessageLimit();
       } catch (e) {
+        chatProvider.deleteEmptyMessage();
         isRequesting = false;
+
         if (kDebugMode) {
           print('API request failed: $e');
         }
@@ -188,7 +195,7 @@ class HomeViewModel with ChangeNotifier {
   }
 
   Future<void> addUserMessage(String message) async {
-    await chatProvider.addMessage(message, 'user');
+    await chatProvider.addMessage(message, TextConstants.instance.user);
     notifyListeners();
   }
 }

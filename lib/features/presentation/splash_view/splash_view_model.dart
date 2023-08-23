@@ -12,8 +12,6 @@ class SplashViewModel {
 
   bool firstOpen = false;
   bool isPremium = false;
-  String firstMessage = "Hi, how can i help you?";
-  String sender = 'robot';
 
   Future<void> init(Function navigate) async {
     _onboardingLocalDataSource = OnboardingLocalDataSource();

@@ -1,3 +1,4 @@
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:flutter/material.dart';
 
 class SplashLogo extends StatelessWidget {
@@ -7,7 +8,7 @@ class SplashLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Image.asset("asssets/icons/logo.svg"),
+      child: Image.asset(TextConstants.instance.logoPath),
     );
   }
 }

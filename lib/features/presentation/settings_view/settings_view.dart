@@ -1,3 +1,4 @@
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/data/datasource/premium_local_data_source.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_text_widget.dart';
 import 'package:chat_gpt/features/presentation/settings_view/widgets/get_premium_button_widget.dart';
@@ -40,12 +41,12 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
           backgroundColor: ColorConstant.instance.black,
-          title: const Align(
+          title: Align(
             alignment: Alignment.center,
             child: Padding(
-              padding: EdgeInsets.only(right: 50.0),
+              padding: const EdgeInsets.only(right: 50.0),
               child: CustomTextWidget(
-                text: 'Settings',
+                text: TextConstants.instance.settings,
                 fontWeight: FontWeight.w700,
                 textAlign: TextAlign.center,
               ),
@@ -60,17 +61,20 @@ class _SettingsViewState extends State<SettingsView> {
           ),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              Visibility(
-                visible: !isPremium,
-                child: const GetPremiumCardWidget(),
-              ),
-              const SizedBox(height: 20),
-              SettingPagesButtonsWidget(),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Visibility(
+                  visible: !isPremium,
+                  child: const GetPremiumCardWidget(),
+                ),
+                const SizedBox(height: 20),
+                SettingPagesButtonsWidget(),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
@@ -82,15 +83,15 @@ class PurchaseCard extends StatelessWidget {
 
 List<Map<String, dynamic>> paymentOptions = [
   {
-    'name': 'Weekly',
-    'price': 'US\$3.99/week',
+    TextConstants.instance.name: TextConstants.instance.weekly,
+    TextConstants.instance.price: TextConstants.instance.weekPrice,
   },
   {
-    'name': 'Monthly',
-    'price': 'US\$19.99/month',
+    TextConstants.instance.name: TextConstants.instance.monthly,
+    TextConstants.instance.price: TextConstants.instance.monthPrice,
   },
   {
-    'name': 'Annual',
-    'price': 'US\$39.99/year',
+    TextConstants.instance.name: TextConstants.instance.yearly,
+    TextConstants.instance.price: TextConstants.instance.yearPrice,
   },
 ];

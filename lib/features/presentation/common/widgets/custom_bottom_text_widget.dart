@@ -1,3 +1,4 @@
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/presentation/common/common_views.dart';
 import 'package:flutter/material.dart';
 
@@ -10,19 +11,22 @@ class CustomBottomTextWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: buildClickableText("Privacy Policy", context, () {
+          child: buildClickableText(
+              TextConstants.instance.privacyPolicy, context, () {
             _openPrivacyPolicyPage(context);
           }),
         ),
         buildVerticalDivider(),
         Flexible(
-          child: buildClickableText("Restore Purchase", context, () {
+          child: buildClickableText(
+              TextConstants.instance.restorePurchase, context, () {
             _openRestorePurchasePage(context);
           }),
         ),
         buildVerticalDivider(),
         Flexible(
-          child: buildClickableText("Terms of Use", context, () {
+          child: buildClickableText(TextConstants.instance.termsOfUse, context,
+              () {
             _openTermsOfUsePage(context);
           }),
         ),
@@ -57,9 +61,9 @@ class CustomBottomTextWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const DynamicPage(
-          title: 'Privacy Policy',
-          content: 'Privacy Policy Page Content',
+        builder: (context) => DynamicPage(
+          title: TextConstants.instance.privacyPolicy,
+          url: TextConstants.instance.privacyPolicyPageUrl,
         ),
       ),
     );
@@ -69,9 +73,9 @@ class CustomBottomTextWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const DynamicPage(
-          title: 'Restore Purchase',
-          content: 'Restore Purchase Page Content',
+        builder: (context) => DynamicPage(
+          title: TextConstants.instance.restorePurchase,
+          url: TextConstants.instance.restorePurchasePageUrl,
         ),
       ),
     );
@@ -81,9 +85,9 @@ class CustomBottomTextWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const DynamicPage(
-          title: 'Terms of Use',
-          content: 'Terms Of Use Page Content',
+        builder: (context) => DynamicPage(
+          title: TextConstants.instance.termsOfUse,
+          url: TextConstants.instance.termsOfUsePageUrl,
         ),
       ),
     );

@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_bottom_text_widget.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_elevated_button.dart';
@@ -69,8 +70,8 @@ class _PurchaseViewState extends State<PurchaseView> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               const CustomLogoWidget(),
-              const CustomTextWidget(
-                text: "Unlimited chat with gpt for only, Try It Now.",
+              CustomTextWidget(
+                text: TextConstants.instance.unlimitedChatWithGPT,
                 fontSize: 22,
                 textAlign: TextAlign.center,
               ),
@@ -78,11 +79,13 @@ class _PurchaseViewState extends State<PurchaseView> {
               Column(
                 children: paymentOptions.map((paymentOption) {
                   return PurchaseCard(
-                    isSelected: paymentOption['name'] == selectedPaymentOption,
+                    isSelected: paymentOption[TextConstants.instance.name] ==
+                        selectedPaymentOption,
                     onChanged: (value) {
                       setState(() {
                         if (value == true) {
-                          selectedPaymentOption = paymentOption['name'];
+                          selectedPaymentOption =
+                              paymentOption[TextConstants.instance.name];
                           isPaymentOptionSelected = true;
                         } else {
                           selectedPaymentOption = null;
@@ -90,8 +93,8 @@ class _PurchaseViewState extends State<PurchaseView> {
                         }
                       });
                     },
-                    paymentName: paymentOption['name'],
-                    paymentPrice: paymentOption['price'],
+                    paymentName: paymentOption[TextConstants.instance.name],
+                    paymentPrice: paymentOption[TextConstants.instance.price],
                   );
                 }).toList(),
               ),
@@ -102,10 +105,11 @@ class _PurchaseViewState extends State<PurchaseView> {
                         .updatePremiumAndShowDialog(context);
                     await _homeViewModel.updateMessageLimit(false);
                   } else {
-                    _showToast(context, 'Please select a payment option');
+                    _showToast(context,
+                        TextConstants.instance.pleaseSelectAPaymentOption);
                   }
                 },
-                buttonText: "Try It Now",
+                buttonText: TextConstants.instance.tryItNow,
               ),
               const CustomBottomTextWidget(),
             ],
