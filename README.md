@@ -21,13 +21,13 @@ Chat GPT Uygulaması, OpenAI'nin GPT-3.5 tabanlı Chat API'sini kullanarak geli�
 ## Ekran Görüntüleri 📸
 
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-  <img src="screenshots/splash_screen.png" alt="Hoş Geldin Ekranı">
-  <img src="screenshots/onboarding1_screen.png" alt="Karşılama Ekranı - 1">
-  <img src="screenshots/onboarding2_screen.png" alt="Karşılama Ekranı - 2">
-  <img src="screenshots/purchase_screen.png" alt="Satın Alma Ekranı">
-  <img src="screenshots/chat_screen.png" alt="Sohbet Ekranı-1">
-  <img src="screenshots/copy_screen.png" alt="Sohbet Ekranı-2">
-  <img src="screenshots/settings_screen.png" alt="Ayarlar Ekranı">
+  <img src="screenshots/splash_screen.png" alt="Hoş Geldin Ekranı" width="250" height="500">
+  <img src="screenshots/onboarding1_screen.png" alt="Karşılama Ekranı - 1" width="250" height="500">
+  <img src="screenshots/onboarding2_screen.png" alt="Karşılama Ekranı - 2"width="250" height="500" >
+  <img src="screenshots/purchase_screen.png" alt="Satın Alma Ekranı"width=" 250" height="500">
+  <img src="screenshots/chat_screen.png" alt="Sohbet Ekranı-1" width="250" height="500">
+  <img src="screenshots/copy_screen.png" alt="Sohbet Ekranı-2" width="250" height="500">
+  <img src="screenshots/settings_screen.png" alt="Ayarlar Ekranı" width="250" height="500">
 </div>
 
 ## Kullanılan Paketler ve Teknolojiler 📦
@@ -107,13 +107,13 @@ Chat GPT Application is a Flutter mobile app developed using OpenAI's GPT-3.5-ba
 ## Screenshots 📸
 
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-  <img src="screenshots/splash_screen.png" alt="Welcome Screen">
-  <img src="screenshots/onboarding1_screen.png" alt="Onboarding Screen - 1">
-  <img src="screenshots/onboarding2_screen.png" alt="Onboarding Screen - 2">
-  <img src="screenshots/purchase_screen.png" alt="Purchase Screen">
-  <img src="screenshots/chat_screen.png" alt="Chat Screen-1">
-  <img src="screenshots/copy_screen.png" alt="Chat Screen-2">
-  <img src="screenshots/settings_screen.png" alt="Settings Screen">
+  <img src="screenshots/splash_screen.png" alt="Welcome Screen" width="250" height="500">
+  <img src="screenshots/onboarding1_screen.png" alt="Onboarding Screen - 1" width="250" height="500">
+  <img src="screenshots/onboarding2_screen.png" alt="Onboarding Screen - 2" width="250" height="500">
+  <img src="screenshots/purchase_screen.png" alt="Purchase Screen" width="250" height="500">
+  <img src="screenshots/chat_screen.png" alt="Chat Screen-1" width="250" height="500">
+  <img src="screenshots/copy_screen.png" alt="Chat Screen-2" width="250" height="500">
+  <img src="screenshots/settings_screen.png" alt="Settings Screen" width="250" height="500">
 </div>
 
 ## Used Packages and Technologies 📦
