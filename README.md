@@ -1,4 +1,4 @@
-# Chat GPT Uygulaması 🤖
+# Chat GPT Uygulaması 🤖 - TR
 
 Mobil uygulama ile yapay zeka tabanlı sohbet deneyimini yaşayın! 📱
 
@@ -8,7 +8,7 @@ Chat GPT Uygulaması, OpenAI'nin GPT-3.5 tabanlı Chat API'sini kullanarak geli�
 
 🌟 **Hoş Geldin Ekranı**: Uygulama başladığında görsel olarak etkileyici bir hoş geldin ekranı ile kullanıcıları karşılar.
 
-📖 **Kullanım Kılavuzu**: Kullanıcılara uygulamanın nasıl kullanılacağı hakkında detaylı bilgi sunan kılavuz sayfası.
+📖 **Karşılama Ekranı**: Kullanıcılara uygulamanın nasıl kullanılacağı hakkında detaylı bilgi sunan karşılama sayfası.
 
 💬 **Sohbet Ekranı**: Kullanıcılar, OpenAI'nin GPT-3.5 tabanlı Chat API'si ile metin tabanlı olarak sohbet edebilirler.
 
@@ -20,13 +20,15 @@ Chat GPT Uygulaması, OpenAI'nin GPT-3.5 tabanlı Chat API'sini kullanarak geli�
 
 ## Ekran Görüntüleri 📸
 
-![Hoş Geldin Ekranı](screenshots/splash_screen.png)
-![Kullanım Kılavuzu Ekranı](screenshots/onboarding1_screen.png)(screenshots/onboarding2_screen.png)
-![Satın Alma Ekranı](screenshots/purchase_screen.png)
-![Sohbet Ekranı](screenshots/chat_screen.png)(screenshots/copy_screen.png)
-![Ayarlar Ekranı](screenshots/settings_screen.png)
-
-
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+  <img src="screenshots/splash_screen.png" alt="Hoş Geldin Ekranı">
+  <img src="screenshots/onboarding1_screen.png" alt="Karşılama Ekranı - 1">
+  <img src="screenshots/onboarding2_screen.png" alt="Karşılama Ekranı - 2">
+  <img src="screenshots/purchase_screen.png" alt="Satın Alma Ekranı">
+  <img src="screenshots/chat_screen.png" alt="Sohbet Ekranı-1">
+  <img src="screenshots/copy_screen.png" alt="Sohbet Ekranı-2">
+  <img src="screenshots/settings_screen.png" alt="Ayarlar Ekranı">
+</div>
 
 ## Kullanılan Paketler ve Teknolojiler 📦
 
@@ -54,7 +56,7 @@ Kullanıcılar premium üyelik satın aldığında aşağıdaki avantajlara sahi
 
 Projeyi yerel makinenize klonlamak ve çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
-1. Bu repo'yu forklayın veya doğrudan klonlayın: `git clone https://github.com/KULLANICI_ADI/chat_gpt.git`
+1. Bu repo'yu forklayın veya doğrudan klonlayın: `git clone https://github.com/derinonursahin/chat_gpt.git`
    
 2. Proje klasörüne gidin: `cd chat_gpt`
    
@@ -82,4 +84,86 @@ Bu proje MIT Lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` d
 
 ---
 
-Bu README dosyası, Chat GPT Uygulaması'nın detaylarını ve kullanılan teknolojileri ayrıntılı bir şekilde açıklamaktadır. Herhangi bir konu hakkında daha fazla bilgi almak isterseniz, lütfen kodunuzu ve belgelerinizi inceleyin.
+# Chat GPT Application 🤖 - EN
+
+Experience artificial intelligence-based chat with a mobile app! 📱
+
+Chat GPT Application is a Flutter mobile app developed using OpenAI's GPT-3.5-based Chat API. 🚀 This app enables users to engage in text-based conversations with an AI-powered chatbot. It also includes features such as a welcome screen, user guide, main chat screen, settings, and WebView pages.
+
+## Features 🌟
+
+🌟 **Welcome Screen**: Impressive visual welcome screen that greets users when the app starts.
+
+📖 **Onboarding**: Detailed guide page providing information on how to use the application.
+
+💬 **Chat Screen**: Users can engage in text-based conversations using OpenAI's GPT-3.5-based Chat API.
+
+⚙️ **Settings**: Designed for users to manage their preferences.
+
+🌐 **WebView Pages**: Users can view different web content using WebView components embedded within the settings page.
+
+🔒 **Premium Membership**: Users gain unlimited messaging and the ability to clear the chat screen upon purchasing a premium membership.
+
+## Screenshots 📸
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+  <img src="screenshots/splash_screen.png" alt="Welcome Screen">
+  <img src="screenshots/onboarding1_screen.png" alt="Onboarding Screen - 1">
+  <img src="screenshots/onboarding2_screen.png" alt="Onboarding Screen - 2">
+  <img src="screenshots/purchase_screen.png" alt="Purchase Screen">
+  <img src="screenshots/chat_screen.png" alt="Chat Screen-1">
+  <img src="screenshots/copy_screen.png" alt="Chat Screen-2">
+  <img src="screenshots/settings_screen.png" alt="Settings Screen">
+</div>
+
+## Used Packages and Technologies 📦
+
+The project has been developed using the following packages and technologies:
+
+- `provider`: Used for in-app state management. Facilitates easy state propagation down the widget tree.
+
+- `lottie`: Employed to integrate animations into the application. Makes adding visually impressive animations easy.
+
+- `http`: Utilized for making HTTP requests and processing responses. Manages API requests and responses.
+
+- `hive` and `hive_flutter`: Employed for efficient and lightweight local database management. Used to store and manage local data.
+
+- `webview_flutter`: Integrated to include the WebView component. Offers an embedded browser to view web pages.
+
+## Premium Membership 🔐
+
+Users who purchase a premium membership gain the following advantages:
+
+- **Unlimited Messaging**: Premium members can engage in unlimited text-based conversations.
+
+- **Chat Screen Clearing**: Premium members can quickly clear the chat screen for a cleaner interface.
+
+## Installation ⚙️
+
+To clone the project to your local machine and run it, follow these steps:
+
+1. Fork this repo or clone it directly: `git clone https://github.com/derinonursahin/chat_gpt.git`
+
+2. Navigate to the project directory: `cd chat_gpt`
+
+3. Install the required dependencies: `flutter pub get`
+
+4. To start the app: `flutter run`
+
+## Contributing 👥
+
+If you would like to contribute to the project, please follow these steps:
+
+1. Fork this repo.
+
+2. Create a new branch: `git checkout -b new-feature`
+
+3. Commit your changes: `git commit -am 'New feature: Description'`
+
+4. Push to your branch: `git push origin new-feature`
+
+5. Create a Pull Request.
+
+## License 📜
+
+This project is licensed under the MIT License. For more information, refer to the `LICENSE` file.
