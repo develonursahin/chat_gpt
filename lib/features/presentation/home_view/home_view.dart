@@ -21,6 +21,7 @@ class _HomeViewState extends State<HomeView> {
   late HomeViewModel homeViewModel;
   bool isLoading = false;
   bool messageView = false;
+  bool isRotated = false;
 
   @override
   void initState() {
@@ -32,49 +33,54 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     var watch = context.watch<HomeViewModel>();
+    final Orientation orientation = MediaQuery.of(context).orientation;
+    isRotated = orientation == Orientation.landscape;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.instance.black,
-        appBar: AppBar(
-          shape: Border(
-            bottom: BorderSide(
-              color: ColorConstant.instance.darkGreen,
-              width: 1.5,
-            ),
-          ),
-          backgroundColor: ColorConstant.instance.black,
-          title: const Center(child: CustomLogoWidget()),
-          leading: IconButton(
-            icon: Icon(
-              Icons.cached_rounded,
-              color: ColorConstant.instance.white,
-              size: 24,
-            ),
-            onPressed: () async {
-              FocusScope.of(context).unfocus();
-              await Future.delayed(const Duration(milliseconds: 220));
-              // ignore: use_build_context_synchronously
-              watch.clearChat(context);
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.settings_rounded,
-                color: ColorConstant.instance.white,
-                size: 24,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const SettingsView(),
+        appBar: isRotated
+            ? null // Hide the AppBar when isRotated is true
+            : AppBar(
+                shape: Border(
+                  bottom: BorderSide(
+                    color: ColorConstant.instance.darkGreen,
+                    width: 1.5,
                   ),
-                );
-              },
-            ),
-          ],
-        ),
+                ),
+                backgroundColor: ColorConstant.instance.black,
+                title: const Center(child: CustomLogoWidget()),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.cached_rounded,
+                    color: ColorConstant.instance.white,
+                    size: 24,
+                  ),
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    await Future.delayed(const Duration(milliseconds: 220));
+                    // ignore: use_build_context_synchronously
+                    watch.clearChat(context);
+                  },
+                ),
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.settings_rounded,
+                      color: ColorConstant.instance.white,
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const SettingsView(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -128,6 +134,7 @@ class _HomeViewState extends State<HomeView> {
               Consumer<HomeViewModel>(
                 builder: (context, homeViewModel, child) {
                   return CustomMessageBarWidget(
+                    isRotated: isRotated,
                     isLimitFull: watch.isLimitFull,
                     messageController: watch.messageController,
                     hasText: watch.hasText,
@@ -137,7 +144,7 @@ class _HomeViewState extends State<HomeView> {
                     },
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

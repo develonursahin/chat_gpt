@@ -4,7 +4,7 @@ import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/presentation/purchase_view/purchase_view.dart';
 import 'package:flutter/material.dart';
 
-class CustomMessageBarWidget extends StatelessWidget {
+class CustomMessageBarWidget extends StatefulWidget {
   const CustomMessageBarWidget({
     Key? key,
     required TextEditingController messageController,
@@ -12,6 +12,7 @@ class CustomMessageBarWidget extends StatelessWidget {
     required this.onSendPressed,
     required this.end,
     required this.isLimitFull,
+    required this.isRotated,
   })  : _messageController = messageController,
         super(key: key);
 
@@ -20,9 +21,22 @@ class CustomMessageBarWidget extends StatelessWidget {
   final Function(String) onSendPressed;
   final VoidCallback end;
   final bool isLimitFull;
+  final bool isRotated;
 
   @override
+  State<CustomMessageBarWidget> createState() => _CustomMessageBarWidgetState();
+}
+
+class _CustomMessageBarWidgetState extends State<CustomMessageBarWidget> {
+  @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
+    double height;
+    if (widget.isRotated) {
+      height = MediaQuery.sizeOf(context).height * 0.3;
+    } else {
+      height = MediaQuery.sizeOf(context).height * 0.07;
+    }
     // ignore: no_leading_underscores_for_local_identifiers
     Future<void> _getPremiumforMoreChat() async {
       CustomNavigator.goToScreen(
@@ -33,7 +47,7 @@ class CustomMessageBarWidget extends StatelessWidget {
     }
 
     return Container(
-      height: 65,
+      height: height,
       decoration: BoxDecoration(
         border: Border(
             top: BorderSide(
@@ -46,14 +60,14 @@ class CustomMessageBarWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextField(
-                controller: _messageController,
+                controller: widget._messageController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: TextConstants.instance.saySomething,
                   hintStyle: TextStyle(color: ColorConstant.instance.darkGrey),
                 ),
                 style: TextStyle(
-                  color: hasText
+                  color: widget.hasText
                       ? ColorConstant.instance.white
                       : ColorConstant.instance.darkGreen,
                 ),
@@ -64,18 +78,18 @@ class CustomMessageBarWidget extends StatelessWidget {
           ),
           IconButton(
             onPressed: () async {
-              if (isLimitFull) {
+              if (widget.isLimitFull) {
                 FocusScope.of(context).unfocus();
                 await Future.delayed(const Duration(milliseconds: 220));
                 await _getPremiumforMoreChat();
               } else {
-                await onSendPressed(_messageController.text);
+                await widget.onSendPressed(widget._messageController.text);
               }
-              end;
-              _messageController.clear();
+              widget.end;
+              widget._messageController.clear();
             },
             icon: const Icon(Icons.send, size: 30),
-            color: hasText
+            color: widget.hasText
                 ? ColorConstant.instance.green
                 : ColorConstant.instance.darkGrey,
           )

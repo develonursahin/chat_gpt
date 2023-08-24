@@ -1,17 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
-import 'package:chat_gpt/features/presentation/common/widgets/custom_bottom_text_widget.dart';
-import 'package:chat_gpt/features/presentation/common/widgets/custom_elevated_button.dart';
-import 'package:chat_gpt/features/presentation/common/widgets/custom_logo_widget.dart';
-import 'package:chat_gpt/features/presentation/common/widgets/custom_text_widget.dart';
-import 'package:chat_gpt/features/presentation/home_view/home_view.dart';
-import 'package:chat_gpt/features/presentation/home_view/home_view_model.dart';
-import 'package:chat_gpt/features/presentation/purchase_view/purcahse_view_model.dart';
-import 'package:chat_gpt/features/presentation/purchase_view/widgets/purchase_card_widget.dart';
-import 'package:chat_gpt/features/presentation/purchase_view/widgets/unlock_to_continue_widget.dart';
-import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
 import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
 import 'package:chat_gpt/features/core/routes/custom_navigator.dart';
 import 'package:chat_gpt/features/presentation/common/widgets/custom_bottom_text_widget.dart';
