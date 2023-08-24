@@ -1,5 +1,5 @@
 name: chat_gpt
-description: A new Flutter project.
+description: An artificial intelligence chat application based on OpenAI GPT-3.5.
 publish_to: 'none'
 version: 1.0.0+1
 
