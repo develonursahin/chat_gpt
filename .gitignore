@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 /lib/features/core/constants/apis/open_ai_api.dart
+
 # Symbolication related
 app.*.symbols
 

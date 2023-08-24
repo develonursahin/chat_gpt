@@ -9,6 +9,8 @@ class ColorConstant {
   Color darkGreen = const Color.fromARGB(76, 74, 160, 128);
   Color transparentGreen = const Color.fromARGB(31, 74, 160, 128);
   Color darkGrey = const Color(0xFF4A4A4A);
+  Color grey = const Color.fromARGB(255, 136, 136, 136);
+
   Color textFormFieldColor = const Color(0xFF262626);
   Color black = const Color(0xFF000000);
   Color darkThemeBlack = const Color(0xFF2D292D);

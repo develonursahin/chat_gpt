@@ -1,27 +1,46 @@
-import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
-import 'package:chat_gpt/features/presentation/views/home_view/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:chat_gpt/features/core/constants/colors/color_constants.dart';
+import 'package:chat_gpt/features/core/constants/texts/text_constants.dart';
+import 'package:chat_gpt/features/core/hive/hive_box.dart';
+import 'package:chat_gpt/features/presentation/home_view/chat_view_model.dart';
+import 'package:chat_gpt/features/presentation/home_view/home_view_model.dart';
+import 'package:chat_gpt/features/presentation/splash_view/splash_view.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  hiveRegisterAdapter();
+  await hiveBox();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => HomeViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Chat GPT',
+      title: TextConstants.instance.appTitle,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.blueGrey[50],
-        primaryColor: Colors.amber,
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: ColorConstant.instance.green),
+        scaffoldBackgroundColor: ColorConstant.instance.black,
+        primaryColor: ColorConstant.instance.green,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: ColorConstant.instance.green,
+            background: ColorConstant.instance.white),
         useMaterial3: true,
       ),
-      home: const HomeView(),
+      home: const SplashView(),
     );
   }
 }
